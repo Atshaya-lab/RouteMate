@@ -1,4 +1,4 @@
-# RouteMate — On-Demand Human Navigation & Safe Escort Mobile App
+# RouteMate - On-Demand Human Navigation & Safe Escort Mobile App
 
 **RouteMate** is an on-demand human navigation guide application built with React Native (Expo) and TypeScript. It connects solo explorers, late-night commuters, and lost travelers with vetted local companion guides for real-time wayfinding, live audio guard escort, and safety monitoring.
 
