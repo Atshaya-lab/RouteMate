@@ -28,15 +28,30 @@ export const NoGuideFallbackScreen: React.FC<NoGuideFallbackScreenProps> = ({
   travelerLocation,
   onBackToExplore,
 }) => {
-  const [routePolyline, setRoutePolyline] = useState<LocationCoordinate[]>([]);
-  const [distanceText, setDistanceText] = useState('620m');
-  const [durationText, setDurationText] = useState('7 mins');
-  const [turnSteps, setTurnSteps] = useState<string[]>([]);
+  const destCoords: LocationCoordinate = {
+    latitude: travelerLocation.latitude + 0.002,
+    longitude: travelerLocation.longitude + 0.0015,
+  };
+
+  const initialPolyline: LocationCoordinate[] = [
+    travelerLocation,
+    { latitude: travelerLocation.latitude + 0.0008, longitude: travelerLocation.longitude + 0.0006 },
+    { latitude: travelerLocation.latitude + 0.0015, longitude: travelerLocation.longitude + 0.0011 },
+    destCoords,
+  ];
+
+  const [routePolyline, setRoutePolyline] = useState<LocationCoordinate[]>(initialPolyline);
+  const [distanceText, setDistanceText] = useState('350m');
+  const [durationText, setDurationText] = useState('4 mins');
+  const [turnSteps, setTurnSteps] = useState<string[]>([
+    'Head along the illuminated pedestrian walkway (120m)',
+    'Pass the 24/7 emergency sentinel station on your left (80m)',
+    'Arrive safely at destination safe haven',
+  ]);
   const [tips, setTips] = useState<RouteTip[]>(LOW_SIGNAL_SAFETY_TIPS);
   const [notifyEnabled, setNotifyEnabled] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
   const [isLowSignal, setIsLowSignal] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // 1. Subscribe to network connectivity
@@ -54,13 +69,7 @@ export const NoGuideFallbackScreen: React.FC<NoGuideFallbackScreenProps> = ({
   }, []);
 
   const loadRouteAndTips = async () => {
-    setLoading(true);
     try {
-      const destCoords: LocationCoordinate = {
-        latitude: travelerLocation.latitude - 0.0042,
-        longitude: travelerLocation.longitude + 0.0031,
-      };
-
       const dirData = await fetchDirections(travelerLocation, destCoords);
       const fetchedTips = await fetchRouteTips();
 
@@ -92,8 +101,6 @@ export const NoGuideFallbackScreen: React.FC<NoGuideFallbackScreenProps> = ({
         setDurationText(cached.durationText);
         setTips(cached.tips);
       }
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -1,18 +1,24 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Image,
-  Platform,
-  Dimensions,
   DimensionValue,
 } from 'react-native';
-import MapView, { Marker, Circle, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
+import Mapbox, {
+  MapView as MapboxMapView,
+  Camera,
+  PointAnnotation,
+  ShapeSource,
+  LineLayer,
+  CircleLayer,
+} from '@rnmapbox/maps';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Colors, Elevation, Radii, Spacing } from '../../theme/tokens';
 import { GuideProfile, LocationCoordinate } from '../../types';
+import { MAPBOX_STYLES } from '../../services/mapbox';
 
 interface LiveMapViewProps {
   travelerLocation: LocationCoordinate;
@@ -41,182 +47,150 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
   interactive = true,
   onRecenterPress,
 }) => {
-  const mapRef = useRef<MapView>(null);
-  const [mapError, setMapError] = React.useState(false);
-  const [isMapReady, setIsMapReady] = React.useState(false);
-
-  const initialRegion = {
-    latitude: travelerLocation.latitude,
-    longitude: travelerLocation.longitude,
-    latitudeDelta: searchRadiusKm ? (searchRadiusKm * 2) / 111 : 0.012,
-    longitudeDelta: searchRadiusKm ? (searchRadiusKm * 2) / 111 : 0.012,
-  };
+  const cameraRef = useRef<Camera>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
-    if (mapRef.current && travelerLocation && !mapError && isMapReady) {
-      try {
-        mapRef.current.animateToRegion(
-          {
-            latitude: travelerLocation.latitude,
-            longitude: travelerLocation.longitude,
-            latitudeDelta: searchRadiusKm ? (searchRadiusKm * 2.2) / 111 : 0.012,
-            longitudeDelta: searchRadiusKm ? (searchRadiusKm * 2.2) / 111 : 0.012,
-          },
-          600
-        );
-      } catch {}
+    if (cameraRef.current && travelerLocation) {
+      const zoom = searchRadiusKm
+        ? Math.max(12, 16 - Math.log2(searchRadiusKm * 1.5))
+        : 15;
+
+      cameraRef.current.setCamera({
+        centerCoordinate: [travelerLocation.longitude, travelerLocation.latitude],
+        zoomLevel: zoom,
+        animationDuration: 600,
+      });
     }
-  }, [travelerLocation.latitude, travelerLocation.longitude, searchRadiusKm, mapError, isMapReady]);
+  }, [travelerLocation.latitude, travelerLocation.longitude, searchRadiusKm]);
 
   const handleRecenter = () => {
-    if (mapRef.current && !mapError) {
-      try {
-        mapRef.current.animateToRegion(
-          {
-            latitude: travelerLocation.latitude,
-            longitude: travelerLocation.longitude,
-            latitudeDelta: 0.008,
-            longitudeDelta: 0.008,
-          },
-          500
-        );
-      } catch {}
+    if (cameraRef.current && travelerLocation) {
+      cameraRef.current.setCamera({
+        centerCoordinate: [travelerLocation.longitude, travelerLocation.latitude],
+        zoomLevel: 15.5,
+        animationDuration: 500,
+      });
     }
     if (onRecenterPress) {
       onRecenterPress();
     }
   };
 
+  // Convert route polyline to GeoJSON LineString
+  const routeGeoJSON = routePolyline && routePolyline.length > 1 ? {
+    type: 'Feature' as const,
+    geometry: {
+      type: 'LineString' as const,
+      coordinates: routePolyline.map((p) => [p.longitude, p.latitude]),
+    },
+    properties: {},
+  } : null;
+
+  // Search Radius GeoJSON Point for circle layer
+  const radiusGeoJSON = searchRadiusKm ? {
+    type: 'Feature' as const,
+    geometry: {
+      type: 'Point' as const,
+      coordinates: [travelerLocation.longitude, travelerLocation.latitude],
+    },
+    properties: {},
+  } : null;
+
   return (
     <View style={[styles.container, { height }]}>
-      {!mapError ? (
-        <MapView
-          ref={mapRef}
-          style={StyleSheet.absoluteFill}
-          initialRegion={initialRegion}
-          scrollEnabled={interactive}
-          zoomEnabled={interactive}
-          rotateEnabled={interactive}
-          showsCompass={false}
-          showsUserLocation={true}
-          onMapReady={() => {
-            setMapError(false);
-            setIsMapReady(true);
-            try {
-              mapRef.current?.animateToRegion(
-                {
-                  latitude: travelerLocation.latitude,
-                  longitude: travelerLocation.longitude,
-                  latitudeDelta: 0.012,
-                  longitudeDelta: 0.012,
-                },
-                500
-              );
-            } catch {}
-          }}
-        >
-          {/* Radar Search Circle Overlays */}
-          {searchRadiusKm !== undefined && searchRadiusKm > 0 && (
-            <>
-              <Circle
-                center={travelerLocation}
-                radius={searchRadiusKm * 1000}
-                fillColor={Colors.mapBlueCircle}
-                strokeColor={Colors.mapBlueStroke}
-                strokeWidth={1.5}
-              />
-              {searchRadiusKm >= 3 && (
-                <Circle
-                  center={travelerLocation}
-                  radius={1000}
-                  fillColor="rgba(0, 55, 176, 0.06)"
-                  strokeColor="rgba(0, 55, 176, 0.2)"
-                  strokeWidth={1}
-                />
-              )}
-            </>
-          )}
+      <MapboxMapView
+        style={StyleSheet.absoluteFill}
+        styleURL={MAPBOX_STYLES.STREETS}
+        scrollEnabled={interactive}
+        zoomEnabled={interactive}
+        rotateEnabled={interactive}
+        pitchEnabled={false}
+        attributionEnabled={false}
+        logoEnabled={false}
+        scaleBarEnabled={false}
+        onDidFinishLoadingMap={() => setMapLoaded(true)}
+      >
+        <Camera
+          ref={cameraRef}
+          centerCoordinate={[travelerLocation.longitude, travelerLocation.latitude]}
+          zoomLevel={15}
+        />
 
-          {/* Route Direction Polyline */}
-          {routePolyline && routePolyline.length > 0 && (
-            <Polyline
-              coordinates={routePolyline}
-              strokeColor={Colors.primaryContainer}
-              strokeWidth={4.5}
-              lineDashPattern={[0]}
+        {/* Radar Search Circle Overlay */}
+        {radiusGeoJSON && (
+          <ShapeSource id="radiusSource" shape={radiusGeoJSON}>
+            <CircleLayer
+              id="radiusCircleLayer"
+              style={{
+                circleRadius: (searchRadiusKm || 1) * 75,
+                circleColor: 'rgba(0, 55, 176, 0.12)',
+                circleStrokeWidth: 1.5,
+                circleStrokeColor: 'rgba(0, 55, 176, 0.45)',
+              }}
             />
-          )}
+          </ShapeSource>
+        )}
 
-          {/* Traveler Location Marker */}
-          <Marker
-            coordinate={travelerLocation}
-            title="You"
-            description="GPS Active"
-            anchor={{ x: 0.5, y: 0.5 }}
-          >
-            <View style={styles.travelerMarkerContainer}>
-              <View style={styles.travelerPulseRing} />
-              <View style={styles.travelerCenterDot}>
-                <View style={styles.travelerInnerCore} />
-              </View>
-            </View>
-          </Marker>
+        {/* Walking Directions Route Line */}
+        {routeGeoJSON && (
+          <ShapeSource id="routeSource" shape={routeGeoJSON}>
+            <LineLayer
+              id="routeLineLayer"
+              style={{
+                lineColor: Colors.primaryContainer,
+                lineWidth: 5.0,
+                lineCap: 'round',
+                lineJoin: 'round',
+              }}
+            />
+          </ShapeSource>
+        )}
 
-          {/* Nearby Guide Pin Markers */}
-          {guides.map((guide) => {
-            const isSelected = selectedGuide?.id === guide.id;
-            return (
-              <Marker
-                key={guide.id}
-                coordinate={guide.location}
-                title={guide.name}
-                description={`${guide.distance} • ★ ${guide.rating}`}
-                onPress={() => onSelectGuide && onSelectGuide(guide)}
-                anchor={{ x: 0.5, y: 1 }}
-              >
-                <View style={styles.guideMarkerContainer}>
-                  <View style={[styles.guideTagBubble, isSelected && styles.guideTagBubbleSelected]}>
-                    <View style={styles.guideLiveDot} />
-                    <Text style={[styles.guideTagText, isSelected && styles.guideTagTextSelected]}>
-                      {guide.name.split(' ')[0]} • {guide.eta}
-                    </Text>
-                  </View>
-
-                  <View style={[styles.guidePinHead, isSelected && styles.guidePinHeadSelected]}>
-                    <Image source={{ uri: guide.avatarUrl }} style={styles.guideAvatar} />
-                    {guide.isVerified && (
-                      <View style={styles.guideVerifiedBadge}>
-                        <MaterialIcons name="check" size={10} color={Colors.onSecondary} />
-                      </View>
-                    )}
-                  </View>
-                </View>
-              </Marker>
-            );
-          })}
-        </MapView>
-      ) : (
-        /* High-Fidelity Vector Canvas Visual Fallback */
-        <View style={StyleSheet.absoluteFill}>
-          <Image
-            source={{
-              uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDBdvr4Lms6OhpFJokM3ugizrYM0Ha3rgv0t5u1bu567aWp5uNGIbMDSlzyB3HKEOIG76RJQkbO82aj48OQGOXGl4P6g_5ZQkgDv1zEQVtGa8qE1D1ijQlsC1JyInow72LdpixYlTrl-GDNO7yKT3bDQ0lPQs-C9tK4y8iXa6zuawuemuAyl2NAWW7Gk-rTd5Df6HCYmehypPpOSKPBCdbbHEdPNoSX1IWDdJDw91miXx124S8YMcLK',
-            }}
-            style={StyleSheet.absoluteFill}
-          />
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 55, 176, 0.08)' }]} />
-
-          {/* Traveler Center Dot */}
-          <View style={{ position: 'absolute', top: '48%', left: '48%' }}>
-            <View style={styles.travelerMarkerContainer}>
-              <View style={styles.travelerPulseRing} />
-              <View style={styles.travelerCenterDot}>
-                <View style={styles.travelerInnerCore} />
-              </View>
+        {/* Traveler Location Point Annotation */}
+        <PointAnnotation
+          id="travelerMarker"
+          coordinate={[travelerLocation.longitude, travelerLocation.latitude]}
+        >
+          <View style={styles.travelerMarkerContainer}>
+            <View style={styles.travelerPulseRing} />
+            <View style={styles.travelerCenterDot}>
+              <View style={styles.travelerInnerCore} />
             </View>
           </View>
-        </View>
-      )}
+        </PointAnnotation>
+
+        {/* Nearby Guide Point Annotations */}
+        {guides.map((guide) => {
+          const isSelected = selectedGuide?.id === guide.id;
+          return (
+            <PointAnnotation
+              key={guide.id}
+              id={`guide-${guide.id}`}
+              coordinate={[guide.location.longitude, guide.location.latitude]}
+              onSelected={() => onSelectGuide && onSelectGuide(guide)}
+            >
+              <View style={styles.guideMarkerContainer}>
+                <View style={[styles.guideTagBubble, isSelected && styles.guideTagBubbleSelected]}>
+                  <View style={styles.guideLiveDot} />
+                  <Text style={[styles.guideTagText, isSelected && styles.guideTagTextSelected]}>
+                    {guide.name.split(' ')[0]} • {guide.eta}
+                  </Text>
+                </View>
+
+                <View style={[styles.guidePinHead, isSelected && styles.guidePinHeadSelected]}>
+                  <Image source={{ uri: guide.avatarUrl }} style={styles.guideAvatar} />
+                  {guide.isVerified && (
+                    <View style={styles.guideVerifiedBadge}>
+                      <MaterialIcons name="check" size={10} color={Colors.onSecondary} />
+                    </View>
+                  )}
+                </View>
+              </View>
+            </PointAnnotation>
+          );
+        })}
+      </MapboxMapView>
 
       {/* Top Map HUD Controls */}
       <View style={styles.topHudRow} pointerEvents="box-none">
@@ -224,7 +198,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
           <View style={styles.accuracyBadge}>
             <View style={styles.accuracyDot} />
             <MaterialIcons name="gps-fixed" size={14} color={Colors.secondaryLive} />
-            <Text style={styles.accuracyText}>High Accuracy • ±{accuracyMeters}m</Text>
+            <Text style={styles.accuracyText}>Mapbox High Accuracy • ±{accuracyMeters}m</Text>
           </View>
         )}
 

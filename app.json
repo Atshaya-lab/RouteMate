@@ -47,6 +47,9 @@
         {
           "locationAlwaysAndWhenInUsePermission": "RouteMate requires continuous background location for the active emergency SOS safety beacon."
         }
+      ],
+      [
+        "@rnmapbox/maps"
       ]
     ]
   }

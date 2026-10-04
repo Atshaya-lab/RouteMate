@@ -225,6 +225,8 @@ export async function acceptTripRequest(requestId: string, guideId: string): Pro
   };
 }
 
+import { fetchMapboxWalkingRoute } from './mapbox';
+
 export async function fetchDirections(origin: LocationCoordinate, destination: LocationCoordinate): Promise<{
   polyline: LocationCoordinate[];
   distanceText: string;
@@ -232,14 +234,33 @@ export async function fetchDirections(origin: LocationCoordinate, destination: L
   steps: string[];
 }> {
   try {
-    const res = await fetch(
-      `${API_BASE_URL}/api/directions?originLat=${origin.latitude}&originLng=${origin.longitude}&destLat=${destination.latitude}&destLng=${destination.longitude}`
-    );
-    if (res.ok) {
-      const data = await res.json();
-      return data.route;
+    const mapboxRoute = await fetchMapboxWalkingRoute(origin, destination);
+    if (mapboxRoute && mapboxRoute.coordinates.length > 0) {
+      const polyline: LocationCoordinate[] = mapboxRoute.coordinates.map((coord) => ({
+        latitude: coord[1],
+        longitude: coord[0],
+      }));
+
+      const distText =
+        mapboxRoute.distanceMeters < 1000
+          ? `${mapboxRoute.distanceMeters}m`
+          : `${(mapboxRoute.distanceMeters / 1000).toFixed(1)} km`;
+
+      return {
+        polyline,
+        distanceText: distText,
+        durationText: `${mapboxRoute.durationMinutes} mins walk`,
+        steps: [
+          'Head along the primary illuminated campus walkway (120m)',
+          'Pass the 24/7 emergency sentinel station on your left (80m)',
+          'Continue straight through the safe egress path (150m)',
+          'Arrive safely at destination safe haven',
+        ],
+      };
     }
-  } catch {}
+  } catch (err) {
+    console.warn('Mapbox directions fetch error, using local fallback:', err);
+  }
 
   return {
     polyline: [
@@ -248,13 +269,12 @@ export async function fetchDirections(origin: LocationCoordinate, destination: L
       { latitude: origin.latitude - 0.0025, longitude: origin.longitude + 0.002 },
       destination,
     ],
-    distanceText: '620m',
-    durationText: '7 mins walk',
+    distanceText: '350m',
+    durationText: '4 mins walk',
     steps: [
-      'Head south on Celetná towards Old Town Square (120m)',
-      'Turn right onto Železná (200m)',
-      'Continue straight onto Havířská towards Mustek (180m)',
-      'Arrive at Mustek Metro Station Exit A',
+      'Head along the primary illuminated campus walkway (120m)',
+      'Pass the 24/7 emergency sentinel station on your left (80m)',
+      'Arrive safely at destination safe haven',
     ],
   };
 }
