@@ -2,7 +2,7 @@ import React from 'react';
 import { LogBox } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RootNavigator } from './src/navigation/RootNavigator';
+import { RootNavigator } from './app/RootNavigator';
 
 LogBox.ignoreAllLogs(true);
 LogBox.ignoreLogs([
