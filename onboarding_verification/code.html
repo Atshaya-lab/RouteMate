@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><title>RouteMate</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#faf8ff;color:#131b2e;-webkit-tap-highlight-color:transparent;}body{min-height:100vh;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container": "#eaedff", "on-primary-fixed": "#001551", "on-surface-variant": "#434655", "error-container": "#ffdad6", "background": "#faf8ff", "inverse-surface": "#283044", "on-tertiary-fixed-variant": "#93000b", "surface-container-highest": "#dae2fd", "primary-fixed-dim": "#b7c4ff", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "on-tertiary": "#ffffff", "secondary-fixed-dim": "#68dba9", "secondary": "#006c4a", "primary": "#0037b0", "on-error": "#ffffff", "outline-variant": "#c4c5d7", "on-primary-container": "#cad3ff", "on-surface": "#131b2e", "error": "#ba1a1a", "secondary-fixed": "#85f8c4", "on-secondary-fixed-variant": "#005137", "surface-bright": "#faf8ff", "on-primary": "#ffffff", "tertiary": "#8f000b", "on-tertiary-container": "#ffc7c1", "on-tertiary-fixed": "#410002", "secondary-container": "#82f5c1", "on-primary-fixed-variant": "#0039b5", "surface-variant": "#dae2fd", "tertiary-fixed": "#ffdad6", "inverse-on-surface": "#eef0ff", "primary-fixed": "#dce1ff", "on-background": "#131b2e", "tertiary-container": "#bb0112", "on-secondary-fixed": "#002114", "surface-dim": "#d2d9f4", "surface": "#faf8ff", "on-error-container": "#93000a", "outline": "#747686", "inverse-primary": "#b7c4ff", "primary-container": "#1d4ed8", "on-secondary-container": "#00714e", "surface-container-high": "#e2e7ff", "surface-container-low": "#f2f3ff", "tertiary-fixed-dim": "#ffb4ab", "surface-tint": "#2151da" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "gutter": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "margin": "1rem" }, fontFamily: { "headline-sm": ["Inter"], "display-lg": ["Inter"], "headline-lg": ["Inter"], "body-sm": ["Inter"], "body-lg": ["Inter"], "tabular-metric": ["Inter"], "label-lg": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"], "headline-md": ["Inter"], "body-md": ["Inter"] }, fontSize: { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "display-lg": ["34px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "body-lg": ["17px", { "lineHeight": "24px", "letterSpacing": "-0.003em", "fontWeight": "400" }], "tabular-metric": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary pt-safe pb-safe"><main class="flex-1 w-full bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Background Scrim & Subtle Ambient Atmosphere -->
+<div class="px-gutter pt-space-md pb-space-xl flex flex-col gap-y-space-lg">
+<!-- Brand Visual & Welcoming Header -->
+<div class="flex flex-col items-center text-center mt-2">
+<!-- App Pin Icon with Two Connected Figures Inspired by Brand Motif -->
+<div class="relative w-20 h-20 mb-3 flex items-center justify-center">
+<div class="absolute inset-0 bg-surface-container-high rounded-full blur-md opacity-60"></div>
+<div class="relative w-16 h-16 bg-surface-container-lowest rounded-full shadow-md flex items-center justify-center text-primary">
+<svg class="w-10 h-10 text-primary-container" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" viewbox="0 0 100 120">
+<path d="M50 110 C50 110 82 72 82 46 C82 25.5 67.7 9 50 9 C32.3 9 18 25.5 18 46 C18 72 50 110 50 110 Z"></path>
+<circle cx="38" cy="40" fill="currentColor" r="6" stroke="none"></circle>
+<circle cx="62" cy="38" fill="currentColor" r="6" stroke="none"></circle>
+<path d="M33 58 C33 50 43 50 43 58 C43 65 57 65 57 56 C57 48 67 48 67 56" stroke-width="6"></path>
+</svg>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-full mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Live Local Presence</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+        Navigate with confidence
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mt-1.5">
+        Never feel lost or unsafe in an unfamiliar place. Instant localized companion escort at your fingertips.
+      </p>
+</div>
+<!-- Dual Role Selection Cards -->
+<div class="flex flex-col gap-3.5" id="roleSelector">
+<!-- Option 1: Traveler (Selected by default) -->
+<div class="group relative p-4 rounded-xl bg-surface-container-lowest shadow-md transition-all duration-200 cursor-pointer overflow-hidden" id="roleTraveler" onclick="selectRole('traveler')" role="button" tabindex="0">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-container" id="travelerIndicator"></div>
+<div class="flex items-start gap-3.5 pl-1.5">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">explore</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">I Need Wayfinding Help</span>
+<div class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center shrink-0" id="travelerRadio">
+<span class="material-symbols-outlined text-[14px] text-on-primary">check</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              Solo explorer, traveler, or late commuter seeking an instant vetted local guide.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px] text-secondary">verified_user</span> Instant Response
+              </span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px] text-primary">record_voice_over</span> Multi-Lingual
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Option 2: Local Guide -->
+<div class="group relative p-4 rounded-xl bg-surface-container-low shadow-sm transition-all duration-200 cursor-pointer overflow-hidden" id="roleGuide" onclick="selectRole('guide')" role="button" tabindex="0">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-transparent" id="guideIndicator"></div>
+<div class="flex items-start gap-3.5 pl-1.5">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[28px]">handshake</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">I Want to Guide Others</span>
+<div class="w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0" id="guideRadio">
+<span class="material-symbols-outlined text-[14px] text-transparent">check</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              Earn by safely assisting newcomers, commuters, and lost visitors navigate your neighborhood.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px] text-secondary">payments</span> Flexible Shifts
+              </span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px] text-primary">shield</span> Vetted Escort ID
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Phone Verification Block -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-md flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface" for="phoneNumber">
+          Enter mobile number to begin
+        </label>
+<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">lock</span> Encrypted
+        </span>
+</div>
+<!-- Phone Input with Country Code Selector -->
+<div class="flex items-center bg-surface-container-low rounded-lg p-1.5 focus-within:bg-surface-container-lowest focus-within:shadow-sm transition-all duration-150">
+<button aria-label="Select Country Code" class="flex items-center gap-1 px-2.5 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-label-md shrink-0 shadow-sm" type="button">
+<span class="text-base leading-none">🇺🇸</span>
+<span class="font-tabular-metric text-label-md">+1</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</button>
+<input class="w-full bg-transparent px-3 py-2 text-on-surface font-tabular-metric text-body-lg placeholder:text-outline-variant outline-none" id="phoneNumber" inputmode="numeric" maxlength="14" placeholder="(555) 019-2834" type="tel"/>
+<div class="pr-2 text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Main Action: Send Code -->
+<button class="w-full h-[54px] rounded-xl bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-md mt-1" id="sendCodeBtn" onclick="triggerSendCode()" type="button">
+<span>Send Verification Code</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- Reassurance Microcopy -->
+<p class="text-center font-body-sm text-body-sm text-on-surface-variant">
+        We will text you a 6-digit code. No spam, ever.
+      </p>
+</div>
+<!-- Quick Sign-In Divider -->
+<div class="relative flex items-center justify-center">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full bg-surface-container-high h-[1px]"></div>
+</div>
+<span class="relative px-3 bg-surface font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+        or continue with
+      </span>
+</div>
+<!-- Apple & Google Fast Track -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Apple Auth -->
+<button class="h-12 rounded-xl bg-surface-container-lowest text-on-surface font-label-lg flex items-center justify-center gap-2.5 shadow-sm active:scale-[0.98] transition-transform" type="button">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 170 170">
+<path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.08-7.73-7.94-12.1-14.58-6.19-9.5-11.02-20.47-14.51-32.92-3.48-12.45-5.23-24.23-5.23-35.34 0-14.61 3.73-26.69 11.19-36.23 7.45-9.54 16.92-14.38 28.41-14.51 5.37 0 11.04 1.34 17.02 4.02 5.98 2.68 9.94 4.08 11.89 4.2 1.48-.12 5.69-1.61 12.63-4.48 6.94-2.87 13.04-4.14 18.3-3.8 13.7.67 24.64 5.75 32.81 15.24-11.85 7.15-17.65 17-17.41 29.56.24 9.8 4.06 17.96 11.46 24.49 7.4 6.53 16.29 10.28 26.67 11.25-2.22 6.84-4.87 13.68-7.95 20.52zM119.22 33.15c0-7.39 2.68-14.42 8.04-21.09 5.36-6.67 12.06-10.82 20.1-12.46.24 1.22.36 2.38.36 3.48 0 7.39-2.78 14.48-8.34 21.27-5.56 6.79-12.37 10.83-20.44 12.12-.12-1.1-.18-2.2-.18-3.32z"></path>
+</svg>
+<span>Apple</span>
+</button>
+<!-- Google Auth -->
+<button class="h-12 rounded-xl bg-surface-container-lowest text-on-surface font-label-lg flex items-center justify-center gap-2.5 shadow-sm active:scale-[0.98] transition-transform" type="button">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z" fill="#4285F4"></path>
+<path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.36 7.31 24 12 24z" fill="#34A853"></path>
+<path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15z" fill="#FBBC05"></path>
+<path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+</svg>
+<span>Google</span>
+</button>
+</div>
+<!-- Verified Guide & Trust Architecture Strip -->
+<div class="mt-2 p-4 rounded-xl bg-surface-container flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-md text-label-md text-on-surface">Community Trust &amp; Safety Standard</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed shrink-0">
+<span class="material-symbols-outlined text-[14px]">shield_person</span>
+</div>
+<span class="leading-tight">24/7 Verified Local Guides</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-error-container flex items-center justify-center text-on-error-container shrink-0">
+<span class="material-symbols-outlined text-[14px]">sos</span>
+</div>
+<span class="leading-tight">Direct Emergency Dispatch</span>
+</div>
+</div>
+</div>
+<!-- Footer Terms Note -->
+<div class="text-center pt-2">
+<p class="font-label-sm text-label-sm text-outline">
+        By tapping Send Verification Code, you agree to our 
+        <a class="text-primary-container font-semibold underline underline-offset-2" href="#terms">Terms of Safe Escort</a> 
+        and <a class="text-primary-container font-semibold underline underline-offset-2" href="#privacy">Privacy Policy</a>.
+      </p>
+</div>
+</div>
+</div>
+<script>
+  function selectRole(role) {
+    const travelerCard = document.getElementById('roleTraveler');
+    const guideCard = document.getElementById('roleGuide');
+    const travelerIndicator = document.getElementById('travelerIndicator');
+    const guideIndicator = document.getElementById('guideIndicator');
+    const travelerRadio = document.getElementById('travelerRadio');
+    const guideRadio = document.getElementById('guideRadio');
+    const sendBtn = document.getElementById('sendCodeBtn');
+
+    if (role === 'traveler') {
+      // Traveler Active
+      travelerCard.className = "group relative p-4 rounded-xl bg-surface-container-lowest shadow-md transition-all duration-200 cursor-pointer overflow-hidden";
+      travelerIndicator.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-primary-container";
+      travelerRadio.className = "w-5 h-5 rounded-full bg-primary-container flex items-center justify-center shrink-0";
+      travelerRadio.innerHTML = '<span class="material-symbols-outlined text-[14px] text-on-primary">check</span>';
+
+      // Guide Inactive
+      guideCard.className = "group relative p-4 rounded-xl bg-surface-container-low shadow-sm transition-all duration-200 cursor-pointer overflow-hidden";
+      guideIndicator.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-transparent";
+      guideRadio.className = "w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0";
+      guideRadio.innerHTML = '<span class="material-symbols-outlined text-[14px] text-transparent">check</span>';
+      
+      sendBtn.querySelector('span:first-child').innerText = 'Send Verification Code';
+    } else {
+      // Guide Active
+      guideCard.className = "group relative p-4 rounded-xl bg-surface-container-lowest shadow-md transition-all duration-200 cursor-pointer overflow-hidden";
+      guideIndicator.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-secondary";
+      guideRadio.className = "w-5 h-5 rounded-full bg-secondary flex items-center justify-center shrink-0";
+      guideRadio.innerHTML = '<span class="material-symbols-outlined text-[14px] text-on-secondary">check</span>';
+
+      // Traveler Inactive
+      travelerCard.className = "group relative p-4 rounded-xl bg-surface-container-low shadow-sm transition-all duration-200 cursor-pointer overflow-hidden";
+      travelerIndicator.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-transparent";
+      travelerRadio.className = "w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0";
+      travelerRadio.innerHTML = '<span class="material-symbols-outlined text-[14px] text-transparent">check</span>';
+
+      sendBtn.querySelector('span:first-child').innerText = 'Join as Certified Local Guide';
+    }
+  }
+
+  function triggerSendCode() {
+    const input = document.getElementById('phoneNumber');
+    const btn = document.getElementById('sendCodeBtn');
+    
+    if (input.value.trim().length < 7) {
+      input.focus();
+      input.parentElement.classList.add('bg-error-container');
+      setTimeout(() => {
+        input.parentElement.classList.remove('bg-error-container');
+      }, 800);
+      return;
+    }
+
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span><span>Verifying Phone...</span>';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">done</span><span>SMS Code Dispatched!</span>';
+      setTimeout(() => {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+      }, 2000);
+    }, 1200);
+  }
+
+  // Automatic phone formatter
+  const phoneInput = document.getElementById('phoneNumber');
+  phoneInput.addEventListener('input', function(e) {
+    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+  });
+</script></main></body></html>

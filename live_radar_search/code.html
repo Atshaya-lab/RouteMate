@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>RouteMate</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#faf8ff;color:#131b2e;-webkit-tap-highlight-color:transparent;}body{min-height:100vh;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container": "#eaedff", "on-primary-fixed": "#001551", "on-surface-variant": "#434655", "error-container": "#ffdad6", "background": "#faf8ff", "inverse-surface": "#283044", "on-tertiary-fixed-variant": "#93000b", "surface-container-highest": "#dae2fd", "primary-fixed-dim": "#b7c4ff", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "on-tertiary": "#ffffff", "secondary-fixed-dim": "#68dba9", "secondary": "#006c4a", "primary": "#0037b0", "on-error": "#ffffff", "outline-variant": "#c4c5d7", "on-primary-container": "#cad3ff", "on-surface": "#131b2e", "error": "#ba1a1a", "secondary-fixed": "#85f8c4", "on-secondary-fixed-variant": "#005137", "surface-bright": "#faf8ff", "on-primary": "#ffffff", "tertiary": "#8f000b", "on-tertiary-container": "#ffc7c1", "on-tertiary-fixed": "#410002", "secondary-container": "#82f5c1", "on-primary-fixed-variant": "#0039b5", "surface-variant": "#dae2fd", "tertiary-fixed": "#ffdad6", "inverse-on-surface": "#eef0ff", "primary-fixed": "#dce1ff", "on-background": "#131b2e", "tertiary-container": "#bb0112", "on-secondary-fixed": "#002114", "surface-dim": "#d2d9f4", "surface": "#faf8ff", "on-error-container": "#93000a", "outline": "#747686", "inverse-primary": "#b7c4ff", "primary-container": "#1d4ed8", "on-secondary-container": "#00714e", "surface-container-high": "#e2e7ff", "surface-container-low": "#f2f3ff", "tertiary-fixed-dim": "#ffb4ab", "surface-tint": "#2151da" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "gutter": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "margin": "1rem" }, fontFamily: { "headline-sm": ["Inter"], "display-lg": ["Inter"], "headline-lg": ["Inter"], "body-sm": ["Inter"], "body-lg": ["Inter"], "tabular-metric": ["Inter"], "label-lg": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"], "headline-md": ["Inter"], "body-md": ["Inter"] }, fontSize: { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "display-lg": ["34px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "body-lg": ["17px", { "lineHeight": "24px", "letterSpacing": "-0.003em", "fontWeight": "400" }], "tabular-metric": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="RouteMate App Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM_SvW-X3joOnImv9N3MEuA2gdPioCys1KaAPJJ1rb6uDpKdKX-WdzedoucUVgMhusy95pMJXoscmzrYXBLm28eCyZU2Wo66JL2XMiH5VoBlkftg9L95ekA1wx__hp6j-wJC-N0sGxiZNnaPbF6Du_g3PnE2HaaGNoFIgKoxGfR0G67d6bPu1iO9DDxj-HC8seGWjzT7rMrfdHw_PvTZ613ovPyfJzR7WIK985UTtmOPnsZOWD5NTK"/><div class="flex flex-col"><span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">RouteMate</span><span class="font-headline-sm text-headline-sm text-on-surface">Explore Map</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="Toggle Guide Mode" class="min-w-[44px] min-h-[44px] px-space-sm py-space-xs rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface-variant hover:text-on-surface flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-[20px] text-secondary">navigation</span><span class="font-label-sm text-label-sm">Live</span></button><button aria-label="Profile" class="min-w-[44px] min-h-[44px] flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhlQT9am7-K9l0E8HNIXDfK0bN-G661Y1zSw-UFYNyTMQaUHJ-UnTEshZ5e_GSF7waHHAfVIk6mwkBilYF1NRPtmRmEO-HNBymTKsB6Zw4UeVuusG_8HIVM2L0N_PVghpHbZFihUulIDYgornlgmUrt7JZERHuXyvwWt6soGX01gwcE6J6UYdWLFymPfUT9QA89rhqbgmQc8yJcvv31-uExTdNtNuQ14cGd-C5i7F7lk8V9reYGwuo"/></button></div></div></header><main class="flex-1 w-full bg-surface pt-16 pb-28"><div class="flex flex-col w-full relative select-none">
+<!-- Interactive Live Radar Map Canvas Container -->
+<div class="relative w-full h-[520px] overflow-hidden bg-surface-container-low">
+<!-- Base Map Surface layer -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-85 scale-105" data-location="Shibuya, Tokyo, Japan" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxclxHSB0ULpGPEGt4aALgH9jTGjATACnsyCgMflXYJIPp0pFVKLwY5IMu6SccrrJBqG2-nnCxt-f6O4k-0f8xKlJqm1mggx2g4VjdvorqDb4EdmEcdw__-hQrZzsCCg7jNk-9ZknEiQ2Or1UjpxVAIiEk3vFi-PdOzSJdE1k47fB5FfrfdgXDa-UgPkjogvY1idcZDZLY4C9VhculKpvNw3eROGrATriSTPyj6_lxEeJVi2aN0m1f')"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-surface/80 via-transparent to-surface pointer-events-none"></div>
+<!-- Animated Radar Pulse Rings & Waves -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-24 h-24 rounded-full bg-primary/10 animate-ping"></div>
+<div class="absolute w-48 h-48 rounded-full bg-primary/15 animate-pulse"></div>
+<div class="absolute w-72 h-72 rounded-full border border-primary/20 scale-90"></div>
+<div class="absolute w-96 h-96 rounded-full border border-primary/10 scale-95"></div>
+<!-- Range Perimeter Markers -->
+<div class="absolute w-[290px] h-[290px] rounded-full flex items-start justify-center">
+<span class="px-2 py-0.5 rounded-full bg-surface/90 shadow-sm text-primary font-label-sm text-label-sm backdrop-blur-md">3 km radius</span>
+</div>
+<div class="absolute w-[390px] h-[390px] rounded-full flex items-start justify-center">
+<span class="px-2 py-0.5 rounded-full bg-surface/90 shadow-sm text-on-surface-variant font-label-sm text-label-sm backdrop-blur-md">5 km search bound</span>
+</div>
+</div>
+<!-- Active Traveler Centered Location Marker -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-12 h-12 rounded-full bg-primary/25 animate-ping"></span>
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30 text-on-primary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person_pin_circle</span>
+</div>
+</div>
+<div class="mt-1 px-2.5 py-0.5 rounded-full bg-surface text-on-surface shadow-md font-label-sm text-label-sm flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span>You (GPS Active)</span>
+</div>
+</div>
+<!-- Nearby Guides Popping Up on Map -->
+<!-- Guide 1: Hiroshi K. -->
+<div class="absolute top-28 left-12 z-20 flex flex-col items-center group cursor-pointer transition-transform hover:scale-105">
+<div class="relative">
+<div class="w-11 h-11 rounded-full p-0.5 bg-surface shadow-lg">
+<img class="w-full h-full object-cover rounded-full" data-alt="Warm and friendly Japanese local guide Hiroshi in Shibuya wearing a subtle navy jacket and warm smile, illuminated by soft golden city dusk lights, high quality editorial portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6vj865EfjAwsPHxGzJmsyOqYMu8PjFcTU5gZhs3VJ6lhpW_8EV2-hiwUsB-2EefAEYoV35TAxvULFMUFnPpJnAVZyPbkZV9hVBdl6VlE-emnAXt0J8qTOFrbJ1sc25dazWWyh__OS0Ou0zlcyQyZK_BydTQ1Gg1zyhxL0gCyNja6FeTmed6jAH0O19lyoDvIf5vh_nB1axBOAAYcIisIiCUouqBaOReeYnBUXJuk2wrw6N1ibD9D5"/>
+</div>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full flex items-center justify-center text-on-secondary shadow-sm">
+<span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+</div>
+<div class="mt-1 px-2 py-0.5 bg-surface/95 backdrop-blur-md rounded-full shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="font-bold">Hiroshi</span>
+<span class="text-on-surface-variant text-[10px]">0.8 km</span>
+</div>
+</div>
+<!-- Guide 2: Elena M. -->
+<div class="absolute top-36 right-10 z-20 flex flex-col items-center group cursor-pointer transition-transform hover:scale-105">
+<div class="relative">
+<div class="w-11 h-11 rounded-full p-0.5 bg-surface shadow-lg">
+<img class="w-full h-full object-cover rounded-full" data-alt="Multilingual local guide Elena smiling with friendly gaze against cozy Tokyo cafe street background, soft daylight, approachable expression, professional travel guide" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFyNACY06ILeaUwefCtYhWJyeSuKk0guedXsGtf1GHJ2tAI5ozjVFNy-YyzknZeTpbO3UN2SwameI8E-gbxH7X3ZeC7cGcj2xtgWJaARqZa9PpTYfLjA4AAInR6PjOsQHHpMcdAgUCO6w0OpEuL0WVRk8zS5c-xLtJP70IZql_WTFFl_QBaKuRoGMlzxmHylTG25xdlh4oTrspBEvDmdMrVnTsXvebTg723tiE2uNIZHwbKkSwrIvl"/>
+</div>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full flex items-center justify-center text-on-secondary shadow-sm">
+<span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+</div>
+<div class="mt-1 px-2 py-0.5 bg-surface/95 backdrop-blur-md rounded-full shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="font-bold">Elena</span>
+<span class="text-on-surface-variant text-[10px]">1.4 km</span>
+</div>
+</div>
+<!-- Guide 3: Kenji S. (Accepting) -->
+<div class="absolute bottom-24 left-20 z-20 flex flex-col items-center group cursor-pointer transition-transform hover:scale-105">
+<div class="relative">
+<div class="w-11 h-11 rounded-full p-0.5 bg-surface shadow-lg">
+<img class="w-full h-full object-cover rounded-full" data-alt="Kenji a certified walking guide in Tokyo with headphones around neck, clear confident posture, daylight park greenery in background, trustworthy and kind gaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtCqjedabkjGj1pG-dRTuTXSyQBF42qDB6PnUzH1hw4UwDcVvv-6JzJNID4-KBalFDu3tOE3xVX4KjJkI7xnJ9e54nLC2hr6Hmn0yCZJj7iq3oPQw2_TRqg-cO5hWx8KBk2bHQ2mgR6scAKiZt47Pho5Tol-_8DFtUyP4P0M5TZf8fnGT-byQYcaLDhoC357VExWHJEtNpIClK8-s6DBAdc6ZiHx4MPE1y15H9Ilnt048-Yb7M_doX"/>
+</div>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full flex items-center justify-center text-on-secondary shadow-sm">
+<span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+</div>
+<div class="mt-1 px-2 py-0.5 bg-surface/95 backdrop-blur-md rounded-full shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="font-bold">Kenji</span>
+<span class="text-secondary font-bold text-[10px]">Connecting...</span>
+</div>
+</div>
+<!-- Top Floating Live Status Banner (Tactical Legibility) -->
+<div class="absolute top-3 inset-x-4 z-30">
+<div class="w-full bg-surface/95 backdrop-blur-xl rounded-xl p-3 shadow-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px] animate-spin">radar</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface">Searching within 5 km...</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Scanning 18 verified local guides</span>
+</div>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container text-primary font-tabular-metric text-[13px]">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span id="elapsedTime">00:24</span>
+</div>
+</div>
+</div>
+<!-- Map Control Overlays -->
+<div class="absolute right-4 bottom-24 z-20 flex flex-col gap-2">
+<button aria-label="Recenter Map" class="w-11 h-11 rounded-full bg-surface text-on-surface shadow-md flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[22px]">my_location</span>
+</button>
+<button aria-label="Toggle Layers" class="w-11 h-11 rounded-full bg-surface text-on-surface shadow-md flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[22px]">layers</span>
+</button>
+</div>
+</div>
+<!-- Bottom Calming Reassurance Card Container -->
+<div class="relative -mt-6 z-30 px-gutter pb-4 flex flex-col gap-3">
+<!-- Reassurance Sheet Header Card -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-xl p-4 flex flex-col gap-3">
+<!-- Sheet Drag Handle Indicator -->
+<div class="w-9 h-1 rounded-full bg-outline-variant mx-auto mb-1"></div>
+<!-- Live Dispatch Status Summary -->
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Finding Your RouteMate</h2>
+<p class="font-body-sm text-body-sm text-secondary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+              3 guides responding to your signal
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span>Safe Connect</span>
+</div>
+</div>
+<!-- Calming Traveler Safety Tip -->
+<div class="w-full bg-surface-container-high rounded-lg p-3 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">wb_incandescent</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Traveler Safety Tip</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Stay in well-lit public spots while we connect you. All RouteMate guides are identity-verified and location-monitored.</p>
+</div>
+</div>
+<!-- Responding Guides Skeleton / Quick Match Previews -->
+<div class="flex flex-col gap-2 pt-1">
+<div class="w-full bg-surface-container-low rounded-lg p-3 flex items-center justify-between animate-pulse">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest"></div>
+<div class="flex flex-col gap-1.5">
+<div class="w-28 h-3.5 bg-surface-container-highest rounded-full"></div>
+<div class="w-20 h-2.5 bg-surface-container-highest rounded-full"></div>
+</div>
+</div>
+<div class="w-16 h-6 rounded-full bg-surface-container-highest"></div>
+</div>
+<div class="w-full bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative w-10 h-10 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of Hiroshi a trusted bilingual walking guide in Tokyo smiling warmly at the camera with gentle evening cityscape background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQVxKL0Fggb3LXL2tp1hVDyXnzZS3xRezI79lL2YUMTvek_pRb1ncfnoSyNn9Swxatb4ygn1kcEprQn1Q8toe3KRbjEzE9RiT9Zoanh3JqPS4KhhyKfnbObPFBjlOQ04YReVdz8iYjkzKuRXjoCpBB8YndMB6UGf1zBgDYfwlG4rSP8WgI2VijHNgc4OXT-HnLzJTBnAsz6JEXbkeUVBDbdChZyV6js3SPaZxhtFpe_IGXcQAOtZ76"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface">Hiroshi K.</span>
+<span class="px-1.5 py-0.2 bg-surface-container rounded text-[10px] text-primary font-bold">4.9 ★</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">English · 日本語 · 3 min away</span>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-semibold active:scale-95 transition-transform">
+            Accept
+          </button>
+</div>
+</div>
+<!-- Secondary Escapes and Actions -->
+<div class="grid grid-cols-2 gap-2 pt-2">
+<button class="w-full min-h-[48px] px-3 py-2 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-98 transition-transform" id="cancelSearchBtn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+<span>Cancel Search</span>
+</button>
+<button class="w-full min-h-[48px] px-3 py-2 rounded-xl bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-98 transition-transform">
+<span class="material-symbols-outlined text-[18px]">offline_bolt</span>
+<span>Offline Route</span>
+</button>
+</div>
+</div>
+<!-- Active Safety Monitoring Status Micro-bar -->
+<div class="w-full bg-surface-container-lowest rounded-lg p-2.5 shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">security</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">RouteMate 24/7 Security Sentinel Active</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Encrypted</span>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    let seconds = 24;
+    const timerElem = document.getElementById('elapsedTime');
+    if (timerElem) {
+      setInterval(() => {
+        seconds++;
+        const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        timerElem.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    const cancelBtn = document.getElementById('cancelSearchBtn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        if (confirm('Cancel guide search and return to explore map?')) {
+          const exploreTab = document.querySelector('[data-path="explore-map"]');
+          if (exploreTab) exploreTab.click();
+        }
+      });
+    }
+  })();
+</script></main><aside class="fixed bottom-24 right-4 z-40"><button aria-label="Emergency SOS Hold to Alert" class="w-16 h-16 rounded-full bg-tertiary-container hover:bg-tertiary text-on-tertiary shadow-[0_12px_32px_-4px_rgba(15,23,42,0.16),0_4px_8px_-2px_rgba(15,23,42,0.06)] active:scale-95 transition-all flex flex-col items-center justify-center select-none"><span class="material-symbols-outlined text-[26px] animate-pulse leading-none">sos</span><span class="font-label-sm text-[10px] uppercase font-bold tracking-tight leading-none mt-0.5">SOS</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.05)]" data-active-classes="text-primary font-label-md"><div class="flex justify-around items-center h-20 px-gutter"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] transition-colors text-primary font-label-md" data-path="explore-map" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm">Explore</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-colors" data-path="sessions" href="#"><span class="material-symbols-outlined text-[24px]">history_toggle_off</span><span class="font-label-sm text-label-sm">Sessions</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-colors" data-path="safety-hub" href="#"><span class="material-symbols-outlined text-[24px]">shield</span><span class="font-label-sm text-label-sm">Safety</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-colors" data-path="profile-settings" href="#"><span class="material-symbols-outlined text-[24px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></div></nav></body></html>

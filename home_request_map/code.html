@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>RouteMate</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#faf8ff;color:#131b2e;-webkit-tap-highlight-color:transparent;}body{min-height:100vh;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container": "#eaedff", "on-primary-fixed": "#001551", "on-surface-variant": "#434655", "error-container": "#ffdad6", "background": "#faf8ff", "inverse-surface": "#283044", "on-tertiary-fixed-variant": "#93000b", "surface-container-highest": "#dae2fd", "primary-fixed-dim": "#b7c4ff", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "on-tertiary": "#ffffff", "secondary-fixed-dim": "#68dba9", "secondary": "#006c4a", "primary": "#0037b0", "on-error": "#ffffff", "outline-variant": "#c4c5d7", "on-primary-container": "#cad3ff", "on-surface": "#131b2e", "error": "#ba1a1a", "secondary-fixed": "#85f8c4", "on-secondary-fixed-variant": "#005137", "surface-bright": "#faf8ff", "on-primary": "#ffffff", "tertiary": "#8f000b", "on-tertiary-container": "#ffc7c1", "on-tertiary-fixed": "#410002", "secondary-container": "#82f5c1", "on-primary-fixed-variant": "#0039b5", "surface-variant": "#dae2fd", "tertiary-fixed": "#ffdad6", "inverse-on-surface": "#eef0ff", "primary-fixed": "#dce1ff", "on-background": "#131b2e", "tertiary-container": "#bb0112", "on-secondary-fixed": "#002114", "surface-dim": "#d2d9f4", "surface": "#faf8ff", "on-error-container": "#93000a", "outline": "#747686", "inverse-primary": "#b7c4ff", "primary-container": "#1d4ed8", "on-secondary-container": "#00714e", "surface-container-high": "#e2e7ff", "surface-container-low": "#f2f3ff", "tertiary-fixed-dim": "#ffb4ab", "surface-tint": "#2151da" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "gutter": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "margin": "1rem" }, fontFamily: { "headline-sm": ["Inter"], "display-lg": ["Inter"], "headline-lg": ["Inter"], "body-sm": ["Inter"], "body-lg": ["Inter"], "tabular-metric": ["Inter"], "label-lg": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"], "headline-md": ["Inter"], "body-md": ["Inter"] }, fontSize: { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "display-lg": ["34px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "body-lg": ["17px", { "lineHeight": "24px", "letterSpacing": "-0.003em", "fontWeight": "400" }], "tabular-metric": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="RouteMate App Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM_SvW-X3joOnImv9N3MEuA2gdPioCys1KaAPJJ1rb6uDpKdKX-WdzedoucUVgMhusy95pMJXoscmzrYXBLm28eCyZU2Wo66JL2XMiH5VoBlkftg9L95ekA1wx__hp6j-wJC-N0sGxiZNnaPbF6Du_g3PnE2HaaGNoFIgKoxGfR0G67d6bPu1iO9DDxj-HC8seGWjzT7rMrfdHw_PvTZ613ovPyfJzR7WIK985UTtmOPnsZOWD5NTK"/><div class="flex flex-col"><span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">RouteMate</span><span class="font-headline-sm text-headline-sm text-on-surface">Explore Map</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="Toggle Guide Mode" class="min-w-[44px] min-h-[44px] px-space-sm py-space-xs rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface-variant hover:text-on-surface flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-[20px] text-secondary">navigation</span><span class="font-label-sm text-label-sm">Live</span></button><button aria-label="Profile" class="min-w-[44px] min-h-[44px] flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhlQT9am7-K9l0E8HNIXDfK0bN-G661Y1zSw-UFYNyTMQaUHJ-UnTEshZ5e_GSF7waHHAfVIk6mwkBilYF1NRPtmRmEO-HNBymTKsB6Zw4UeVuusG_8HIVM2L0N_PVghpHbZFihUulIDYgornlgmUrt7JZERHuXyvwWt6soGX01gwcE6J6UYdWLFymPfUT9QA89rhqbgmQc8yJcvv31-uExTdNtNuQ14cGd-C5i7F7lk8V9reYGwuo"/></button></div></div></header><main class="flex-1 w-full bg-surface pt-16 pb-28"><div class="flex flex-col w-full relative">
+<div class="relative w-full h-[380px] overflow-hidden rounded-b-3xl shadow-sm">
+<div class="w-full h-full bg-cover bg-center" data-location="Old Town, Prague" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBdvr4Lms6OhpFJokM3ugizrYM0Ha3rgv0t5u1bu567aWp5uNGIbMDSlzyB3HKEOIG76RJQkbO82aj48OQGOXGl4P6g_5ZQkgDv1zEQVtGa8qE1D1ijQlsC1JyInow72LdpixYlTrl-GDNO7yKT3bDQ0lPQs-C9tK4y8iXa6zuawuemuAyl2NAWW7Gk-rTd5Df6HCYmehypPpOSKPBCdbbHEdPNoSX1IWDdJDw91miXx124S8YMcLK')"></div>
+<div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
+<div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+<div class="pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-md text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+<span class="material-symbols-outlined text-[16px] text-secondary">gps_fixed</span>
+<span class="font-label-sm text-label-sm">High Accuracy • ±3m</span>
+</div>
+<div class="pointer-events-auto flex items-center gap-2">
+<button aria-label="Recenter Current Location" class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-md flex items-center justify-center text-primary active:scale-95 transition-transform" id="recenterBtn">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+</div>
+</div>
+<div class="absolute top-[48%] left-[45%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none">
+<div class="relative flex items-center justify-center">
+<div class="w-12 h-12 rounded-full bg-primary/20 animate-ping absolute"></div>
+<div class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center relative">
+<div class="w-4 h-4 rounded-full bg-primary ring-2 ring-surface-container-lowest shadow-md"></div>
+</div>
+</div>
+<div class="mt-1 px-2.5 py-1 rounded-full bg-inverse-surface/90 backdrop-blur-sm text-inverse-on-surface flex items-center gap-1 shadow-lg whitespace-nowrap">
+<span class="material-symbols-outlined text-[12px] text-secondary-fixed">navigation</span>
+<span class="font-label-sm text-label-sm">You • Old Town Alleyway</span>
+</div>
+</div>
+<div class="absolute top-[30%] left-[24%] flex items-center gap-1.5 bg-surface-container-lowest/95 px-2 py-1 rounded-full shadow-md">
+<div class="relative">
+<div class="w-6 h-6 rounded-full bg-secondary/15 flex items-center justify-center">
+<span class="material-symbols-outlined text-[15px] text-secondary">person_pin_circle</span>
+</div>
+<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-secondary ring-1 ring-surface-container-lowest"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Mateo • 1 min</span>
+</div>
+<div class="absolute top-[22%] right-[16%] flex items-center gap-1.5 bg-surface-container-lowest/95 px-2 py-1 rounded-full shadow-md">
+<div class="relative">
+<div class="w-6 h-6 rounded-full bg-secondary/15 flex items-center justify-center">
+<span class="material-symbols-outlined text-[15px] text-secondary">person_pin_circle</span>
+</div>
+<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-secondary ring-1 ring-surface-container-lowest"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Eleni • 2 min</span>
+</div>
+<div class="absolute bottom-6 right-6 flex items-center gap-1.5 bg-surface-container-lowest/90 px-2 py-1 rounded-full shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">14 Verified Guides Active</span>
+</div>
+</div>
+<div class="w-full px-gutter -mt-4 relative z-30 pb-4">
+<div class="w-full bg-surface-container-lowest rounded-2xl shadow-xl p-space-md flex flex-col gap-space-md">
+<div class="w-full flex justify-center py-0.5">
+<div class="w-10 h-1 rounded-full bg-outline-variant"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Safe Wayfinding Connection</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+          Live Mates
+        </span>
+</div>
+<div class="relative w-full">
+<label class="sr-only" for="destinationInput">Destination Search</label>
+<div class="flex items-center w-full min-h-[52px] px-3.5 bg-surface-container-low rounded-xl text-on-surface focus-within:bg-surface-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[22px] text-primary mr-2.5">explore</span>
+<input class="w-full bg-transparent font-body-md text-body-md text-on-surface focus:outline-none placeholder:text-on-surface-variant truncate" id="destinationInput" placeholder="Where are you trying to reach?" type="text" value="Mustek Metro Station, Exit A"/>
+<button aria-label="Clear destination field" class="min-w-[40px] min-h-[40px] flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="clearInputBtn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Quick Destination Presets</span>
+<div class="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+<button class="dest-chip flex items-center gap-1.5 px-3 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md shrink-0 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px] text-primary">subway</span>
+<span>Nearest Metro</span>
+</button>
+<button class="dest-chip flex items-center gap-1.5 px-3 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md shrink-0 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px] text-secondary">hotel</span>
+<span>Grand Palace Hotel</span>
+</button>
+<button class="dest-chip flex items-center gap-1.5 px-3 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md shrink-0 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px] text-primary">local_police</span>
+<span>Safe Haven / Police</span>
+</button>
+<button class="dest-chip flex items-center gap-1.5 px-3 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md shrink-0 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px] text-outline">add_location_alt</span>
+<span>Historic Square</span>
+</button>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl flex items-center gap-3">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="A friendly verified female local guide in her late 20s smiling reassuringly, dressed in a warm casual traveler jacket on a daylight European cobblestone city street with soft warm natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsGOEtYlkPls50QE5k780MPG8JEoNjVW2Bz9CvIgMfT6BIVWehLMKk6IicSRwumISxcwZMw7XTyl0lccSC43ieMc-kscPfnqTstWvys17zW8FjDF8Jm49phz0y8l0AfHg3r14GCcoAM-lGxdbog1dhVNZsZFiC_M4gbGqauI7TzVkHo6H8Sl5b4BC73Y3mOGwg7ht4eHSG1_-33WxLT2VfUAx-uotHu1l3nr5ImOyiZ8EuK0VHBt4n"/>
+<span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-secondary ring-2 ring-surface-container-lowest"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-label-lg text-label-lg text-on-surface truncate">Clara V.</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<span class="font-tabular-metric text-[13px] text-secondary font-bold">120m away</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="flex items-center text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-amber-500 mr-0.5" style="font-variation-settings: 'FILL' 1;">star</span>
+              4.98 (340 walks)
+            </span>
+<span class="text-on-surface-variant">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">English, Czech, German</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full min-h-[56px] rounded-xl bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm flex flex-col items-center justify-center shadow-lg active:scale-[0.99] transition-all" id="requestGuideBtn">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px]">record_voice_over</span>
+<span>Find a Local Guide Now</span>
+</div>
+</button>
+<div class="flex items-center justify-center gap-1.5 text-center">
+<span class="material-symbols-outlined text-[15px] text-secondary">bolt</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Average dispatch time: <strong class="text-on-surface">45 secs</strong> • 14 verified guides online</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full px-gutter flex flex-col gap-space-sm mb-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Route Safety Features</span>
+<span class="font-label-sm text-label-sm text-primary">Always Enabled</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-low p-3 rounded-xl flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">encrypted</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Audio Guard</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Encrypted live mic sharing during active guidance walk.</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-xl flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[18px]">share_location</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Realtime Beacon</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Emergency contacts receive your live path updates.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  const clearBtn = document.getElementById('clearInputBtn');
+  const destInput = document.getElementById('destinationInput');
+  const recenterBtn = document.getElementById('recenterBtn');
+  const requestGuideBtn = document.getElementById('requestGuideBtn');
+  const chipButtons = document.querySelectorAll('.dest-chip');
+
+  if (clearBtn && destInput) {
+    clearBtn.addEventListener('click', () => {
+      destInput.value = '';
+      destInput.focus();
+    });
+  }
+
+  chipButtons.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const label = chip.querySelector('span:last-child');
+      if (label && destInput) {
+        destInput.value = label.textContent.trim();
+      }
+    });
+  });
+
+  if (recenterBtn) {
+    recenterBtn.addEventListener('click', () => {
+      recenterBtn.classList.add('rotate-45');
+      setTimeout(() => {
+        recenterBtn.classList.remove('rotate-45');
+      }, 300);
+    });
+  }
+
+  if (requestGuideBtn) {
+    requestGuideBtn.addEventListener('click', () => {
+      requestGuideBtn.innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[22px] animate-spin">sync</span>
+          <span>Connecting with Mateo...</span>
+        </div>
+      `;
+      setTimeout(() => {
+        requestGuideBtn.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[22px] text-secondary-fixed">check_circle</span>
+            <span>Mateo Accepted &bull; Arriving in 1 min</span>
+          </div>
+        `;
+      }, 1400);
+    });
+  }
+</script></main><aside class="fixed bottom-24 right-4 z-40"><button aria-label="Emergency SOS Hold to Alert" class="w-16 h-16 rounded-full bg-tertiary-container hover:bg-tertiary text-on-tertiary shadow-[0_12px_32px_-4px_rgba(15,23,42,0.16),0_4px_8px_-2px_rgba(15,23,42,0.06)] active:scale-95 transition-all flex flex-col items-center justify-center select-none"><span class="material-symbols-outlined text-[26px] animate-pulse leading-none">sos</span><span class="font-label-sm text-[10px] uppercase font-bold tracking-tight leading-none mt-0.5">SOS</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.05)]" data-active-classes="text-primary font-label-md"><div class="flex justify-around items-center h-20 px-gutter"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] transition-colors text-primary font-label-md" data-path="explore-map" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm">Explore</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-colors" data-path="sessions" href="#"><span class="material-symbols-outlined text-[24px]">history_toggle_off</span><span class="font-label-sm text-label-sm">Sessions</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-colors" data-path="safety-hub" href="#"><span class="material-symbols-outlined text-[24px]">shield</span><span class="font-label-sm text-label-sm">Safety</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] text-on-surface-variant hover:text-on-surface transition-colors" data-path="profile-settings" href="#"><span class="material-symbols-outlined text-[24px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></div></nav></body></html>

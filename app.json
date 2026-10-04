@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "RouteMate",
+    "slug": "routemate",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#faf8ff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.routemate.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "RouteMate uses your location to connect you with nearby verified local guides and safe navigation waypoints.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "RouteMate uses your location during active escort sessions to maintain emergency beacon telemetry and traveler safety.",
+        "UIBackgroundModes": [
+          "location",
+          "remote-notification"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#faf8ff"
+      },
+      "package": "com.routemate.app",
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "RouteMate requires continuous background location for the active emergency SOS safety beacon."
+        }
+      ]
+    ]
+  }
+}
