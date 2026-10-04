@@ -144,26 +144,17 @@ function getDistanceKm(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
+const { scoreAndRankGuides, calculateHaversineDistanceKm } = require('./matching');
+
 // REST ENDPOINTS
 
-// 1. Nearby Guides Query (PostGIS emulation)
+// 1. Nearby Guides Query (PostGIS & Pure Matching Engine)
 app.get('/api/guides/nearby', (req, res) => {
-  const lat = parseFloat(req.query.lat) || 50.0875;
-  const lng = parseFloat(req.query.lng) || 14.4211;
+  const lat = parseFloat(req.query.lat) || 9.5747;
+  const lng = parseFloat(req.query.lng) || 77.6815;
   const radiusKm = parseFloat(req.query.radiusKm) || 5.0;
 
-  const results = activeGuides
-    .filter((g) => g.isOnline)
-    .map((g) => {
-      const dist = getDistanceKm(lat, lng, g.location.latitude, g.location.longitude);
-      return {
-        ...g,
-        distanceKm: Math.round(dist * 100) / 100,
-        distance: dist < 1 ? `${Math.round(dist * 1000)}m away` : `${dist.toFixed(1)} km away`,
-      };
-    })
-    .filter((g) => g.distanceKm <= radiusKm)
-    .sort((a, b) => a.distanceKm - b.distanceKm);
+  const results = scoreAndRankGuides({ latitude: lat, longitude: lng }, activeGuides, radiusKm);
 
   res.json({ guides: results, totalOnline: activeGuides.filter((g) => g.isOnline).length });
 });
