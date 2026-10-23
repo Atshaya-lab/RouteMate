@@ -6,15 +6,29 @@ class RouteResult {
   final List<GraphNode> path;
   final double totalDistanceMeters;
   final double safetyScore; // 0.0 to 1.0 (1.0 = safe, well-lit, fully verified)
+  final int nightScore; // 0 to 100 Night Activity Score
+  final int cctvCount; // Total surveillance cameras along route
+  final int openPlacesCount; // Total 24/7 open establishments
+  final double maxDarkGapMeters; // Longest continuous dark/isolated stretch in meters
+  final double mainRoadPercentage; // Percentage of route on well-lit main boulevards
+  final int estimatedMinutes; // Estimated travel duration
+  final String routeType; // 'safest' (recommended) or 'fastest'
   final List<String> uncertaintyWarnings;
   final List<String> avoidedHazards;
   final bool isDynamicReroute;
-  final String status; // 'optimal_safe', 'fallback', 'no_path_found'
+  final String status; // 'optimal_safe', 'fastest', 'fallback', 'no_path_found'
 
   const RouteResult({
     required this.path,
     required this.totalDistanceMeters,
     required this.safetyScore,
+    this.nightScore = 50,
+    this.cctvCount = 0,
+    this.openPlacesCount = 0,
+    this.maxDarkGapMeters = 0.0,
+    this.mainRoadPercentage = 100.0,
+    this.estimatedMinutes = 5,
+    this.routeType = 'safest',
     this.uncertaintyWarnings = const [],
     this.avoidedHazards = const [],
     this.isDynamicReroute = false,
@@ -35,6 +49,7 @@ class BidirectionalAStar {
     required String sourceNodeId,
     required String targetNodeId,
     bool isDynamicReroute = false,
+    String transitMode = 'walking',
   }) {
     final startNode = graph.nodes[sourceNodeId];
     final targetNode = graph.nodes[targetNodeId];
@@ -230,17 +245,127 @@ class BidirectionalAStar {
       curr = parentBackward[curr];
     }
 
-    // Calculate actual geographical physical distance and composite safety score
+    return _buildRouteResult(
+      fullPath: fullPath,
+      avoidedHazards: avoidedHazards,
+      uncertaintyWarnings: uncertaintyWarnings.toList(),
+      isDynamicReroute: isDynamicReroute,
+      status: 'optimal_safe',
+      routeType: 'safest',
+      transitMode: transitMode,
+    );
+  }
+
+  /// Calculates the fastest route based purely on physical distance / shortest path,
+  /// ignoring safety penalties to let the user compare time vs. security trade-offs.
+  RouteResult findFastestRoute({
+    required String sourceNodeId,
+    required String targetNodeId,
+    String transitMode = 'walking',
+  }) {
+    final startNode = graph.nodes[sourceNodeId];
+    final targetNode = graph.nodes[targetNodeId];
+
+    if (startNode == null || targetNode == null) {
+      return const RouteResult(
+        path: [],
+        totalDistanceMeters: 0,
+        safetyScore: 0,
+        status: 'no_path_found',
+      );
+    }
+
+    if (sourceNodeId == targetNodeId) {
+      return RouteResult(
+        path: [startNode],
+        totalDistanceMeters: 0,
+        safetyScore: 1.0,
+        nightScore: 99,
+        routeType: 'fastest',
+        status: 'fastest',
+      );
+    }
+
+    final Map<String, double> gScore = {sourceNodeId: 0.0};
+    final Map<String, double> fScore = {sourceNodeId: 0.0};
+    final Map<String, String> parent = {};
+    final Set<String> openSet = {sourceNodeId};
+    final Set<String> closedSet = {};
+
+    while (openSet.isNotEmpty) {
+      final currentId = _getMinFNode(openSet, fScore);
+      if (currentId == targetNodeId) break;
+
+      openSet.remove(currentId);
+      closedSet.add(currentId);
+
+      final outgoing = graph.adjacencyList[currentId] ?? [];
+      for (final edge in outgoing) {
+        if (edge.isBlocked) continue; // Skip only physically blocked edges
+        final neighborId = edge.toNodeId;
+        if (closedSet.contains(neighborId)) continue;
+
+        final tentativeG = (gScore[currentId] ?? double.infinity) + edge.distanceMeters;
+        if (tentativeG < (gScore[neighborId] ?? double.infinity)) {
+          parent[neighborId] = currentId;
+          gScore[neighborId] = tentativeG;
+          fScore[neighborId] = tentativeG;
+          openSet.add(neighborId);
+        }
+      }
+    }
+
+    if (!parent.containsKey(targetNodeId) && sourceNodeId != targetNodeId) {
+      return const RouteResult(
+        path: [],
+        totalDistanceMeters: 0,
+        safetyScore: 0,
+        status: 'no_path_found',
+      );
+    }
+
+    // Reconstruct Fastest Path
+    final List<GraphNode> path = [];
+    String? curr = targetNodeId;
+    while (curr != null) {
+      path.add(graph.nodes[curr]!);
+      curr = parent[curr];
+    }
+    final fullPath = path.reversed.toList();
+
+    return _buildRouteResult(
+      fullPath: fullPath,
+      avoidedHazards: const [],
+      uncertaintyWarnings: const [],
+      isDynamicReroute: false,
+      status: 'fastest',
+      routeType: 'fastest',
+      transitMode: transitMode,
+    );
+  }
+
+  RouteResult _buildRouteResult({
+    required List<GraphNode> fullPath,
+    required List<String> avoidedHazards,
+    required List<String> uncertaintyWarnings,
+    required bool isDynamicReroute,
+    required String status,
+    required String routeType,
+    String transitMode = 'walking',
+  }) {
     double physicalDistance = 0.0;
     double safetySum = 0.0;
+    double lightingSum = 0.0;
+    int totalCctv = 0;
+    int totalOpenPlaces = 0;
+    double maxDarkGap = 0.0;
+    double mainRoadMeters = 0.0;
     int edgeCount = 0;
 
     for (int i = 0; i < fullPath.length - 1; i++) {
       final u = fullPath[i];
       final v = fullPath[i + 1];
-      physicalDistance += u.distanceTo(v);
 
-      // Find matching edge to assess safety score
       final edges = graph.adjacencyList[u.id] ?? [];
       final matchingEdge = edges.firstWhere(
         (e) => e.toNodeId == v.id,
@@ -251,22 +376,57 @@ class BidirectionalAStar {
           distanceMeters: u.distanceTo(v),
         ),
       );
+
+      final dist = matchingEdge.distanceMeters > 0 ? matchingEdge.distanceMeters : u.distanceTo(v);
+      physicalDistance += dist;
+
       final eval = safetyEvaluator.evaluateEdge(matchingEdge);
       safetySum += eval.safetyScore;
+      lightingSum += matchingEdge.lightingScore;
+      totalCctv += matchingEdge.cctvCount;
+      totalOpenPlaces += matchingEdge.open24x7PlacesCount;
+      if (matchingEdge.maxDarkGapMeters > maxDarkGap) {
+        maxDarkGap = matchingEdge.maxDarkGapMeters;
+      }
+      if (matchingEdge.roadCategory == 'main_boulevard') {
+        mainRoadMeters += dist;
+      }
       edgeCount++;
     }
 
-    final double compositeSafetyScore =
-        edgeCount > 0 ? (safetySum / edgeCount) : 1.0;
+    final double compositeSafetyScore = edgeCount > 0 ? (safetySum / edgeCount) : 1.0;
+    final double avgLighting = edgeCount > 0 ? (lightingSum / edgeCount) : 1.0;
+    final double mainRoadRatio = physicalDistance > 0 ? (mainRoadMeters / physicalDistance) : 1.0;
+
+    final nightScore = safetyEvaluator.computeNightScore(
+      lightingScore: avgLighting,
+      openPlacesCount: totalOpenPlaces,
+      cctvCount: totalCctv,
+      distanceMeters: physicalDistance,
+      maxDarkGapMeters: maxDarkGap,
+      mainRoadRatio: mainRoadRatio,
+      transitMode: transitMode,
+    );
+
+    // Speed: walking ~ 75 m/min (~4.5 km/h); two-wheeler ~ 350 m/min (~21 km/h)
+    final metersPerMin = transitMode == 'two_wheeler' ? 350.0 : 75.0;
+    final estimatedMinutes = math.max(1, (physicalDistance / metersPerMin).round());
 
     return RouteResult(
       path: fullPath,
       totalDistanceMeters: physicalDistance,
       safetyScore: compositeSafetyScore,
-      uncertaintyWarnings: uncertaintyWarnings.toList(),
+      nightScore: nightScore,
+      cctvCount: totalCctv,
+      openPlacesCount: totalOpenPlaces,
+      maxDarkGapMeters: maxDarkGap,
+      mainRoadPercentage: (mainRoadRatio * 100).roundToDouble(),
+      estimatedMinutes: estimatedMinutes,
+      routeType: routeType,
+      uncertaintyWarnings: uncertaintyWarnings,
       avoidedHazards: avoidedHazards,
       isDynamicReroute: isDynamicReroute,
-      status: 'optimal_safe',
+      status: status,
     );
   }
 

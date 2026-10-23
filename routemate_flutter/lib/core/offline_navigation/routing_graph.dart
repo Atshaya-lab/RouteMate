@@ -56,6 +56,10 @@ class GraphEdge {
   final bool isRestricted; // Curfew or private access
   final double dataConfidence; // 0.0 (uncertain/unverified) to 1.0 (verified)
   bool isBlocked; // Dynamic status: reported blocked on-the-fly
+  final int cctvCount; // Public surveillance cameras on this stretch
+  final int open24x7PlacesCount; // Verified 24/7 pharmacies, clinics, stores open late
+  final double maxDarkGapMeters; // Longest continuous unlit / empty stretch on this edge
+  final String roadCategory; // 'main_boulevard', 'lit_walkway', 'secluded_alley'
 
   GraphEdge({
     required this.id,
@@ -68,6 +72,29 @@ class GraphEdge {
     this.isRestricted = false,
     this.dataConfidence = 1.0,
     this.isBlocked = false,
+    this.cctvCount = 0,
+    this.open24x7PlacesCount = 0,
+    this.maxDarkGapMeters = 0.0,
+    this.roadCategory = 'main_boulevard',
+  });
+}
+
+/// Represents a physical Point of Interest (POI) or surveillance asset along routes.
+class SafetyPoi {
+  final String id;
+  final String name;
+  final String category; // 'open_24x7', 'cctv', 'police', 'clinic', 'isolated_alert'
+  final double latitude;
+  final double longitude;
+  final String subtitle;
+
+  const SafetyPoi({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.latitude,
+    required this.longitude,
+    required this.subtitle,
   });
 }
 
@@ -98,6 +125,10 @@ class RoutingGraph {
         isRestricted: edge.isRestricted,
         dataConfidence: edge.dataConfidence,
         isBlocked: edge.isBlocked,
+        cctvCount: edge.cctvCount,
+        open24x7PlacesCount: edge.open24x7PlacesCount,
+        maxDarkGapMeters: edge.maxDarkGapMeters,
+        roadCategory: edge.roadCategory,
       );
       adjacencyList.putIfAbsent(reverseEdge.fromNodeId, () => []).add(reverseEdge);
       reverseAdjacencyList.putIfAbsent(reverseEdge.toNodeId, () => []).add(reverseEdge);

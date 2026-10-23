@@ -33,6 +33,12 @@ class AppState extends ChangeNotifier {
   late final BidirectionalAStar _astarEngine;
   late final DynamicRerouter _dynamicRerouter;
   RouteResult? _currentOfflineRoute;
+  RouteResult? _safestRoute;
+  RouteResult? _fastestRoute;
+  String _selectedRouteType = 'safest'; // 'safest' or 'fastest'
+  String _transitMode = 'walking'; // 'walking' or 'two_wheeler'
+  List<SafetyPoi> _safetyPois = CampusOfflineGraphBuilder.getCampusSafetyPois();
+  bool _showSafetyPois = true;
   bool _isOfflineModeActive = false;
 
   AppState() {
@@ -55,11 +61,18 @@ class AppState extends ChangeNotifier {
       safetyEvaluator: _safetyEvaluator,
     );
 
-    // Initial safe offline route calculation
-    _currentOfflineRoute = _astarEngine.findSafeRoute(
+    // Initial dual offline route calculation
+    _safestRoute = _astarEngine.findSafeRoute(
       sourceNodeId: 'node_main_gate',
       targetNodeId: 'node_north_hostels',
+      transitMode: _transitMode,
     );
+    _fastestRoute = _astarEngine.findFastestRoute(
+      sourceNodeId: 'node_main_gate',
+      targetNodeId: 'node_north_hostels',
+      transitMode: _transitMode,
+    );
+    _currentOfflineRoute = _safestRoute;
   }
 
   // Getters
@@ -114,6 +127,12 @@ class AppState extends ChangeNotifier {
   // Offline Navigation Getters
   RoutingGraph get offlineGraph => _offlineGraph;
   RouteResult? get currentOfflineRoute => _currentOfflineRoute;
+  RouteResult? get safestRoute => _safestRoute;
+  RouteResult? get fastestRoute => _fastestRoute;
+  String get selectedRouteType => _selectedRouteType;
+  String get transitMode => _transitMode;
+  List<SafetyPoi> get safetyPois => _safetyPois;
+  bool get showSafetyPois => _showSafetyPois;
   bool get isOfflineModeActive => _isOfflineModeActive;
   List<BlockedPathReport> get blockedReports => _dynamicRerouter.blockedReports;
 
@@ -304,14 +323,40 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void computeOfflineRoute({
+  void selectRouteType(String routeType) {
+    if (routeType == 'safest' || routeType == 'fastest') {
+      _selectedRouteType = routeType;
+      _currentOfflineRoute = routeType == 'safest' ? _safestRoute : _fastestRoute;
+      notifyListeners();
+    }
+  }
+
+  void setTransitMode(String mode) {
+    if (mode == _transitMode) return;
+    _transitMode = mode;
+    computeDualRoutes();
+  }
+
+  void toggleShowSafetyPois() {
+    _showSafetyPois = !_showSafetyPois;
+    notifyListeners();
+  }
+
+  void computeDualRoutes({
     String sourceId = 'node_main_gate',
     String targetId = 'node_north_hostels',
   }) {
-    _currentOfflineRoute = _astarEngine.findSafeRoute(
+    _safestRoute = _astarEngine.findSafeRoute(
       sourceNodeId: sourceId,
       targetNodeId: targetId,
+      transitMode: _transitMode,
     );
+    _fastestRoute = _astarEngine.findFastestRoute(
+      sourceNodeId: sourceId,
+      targetNodeId: targetId,
+      transitMode: _transitMode,
+    );
+    _currentOfflineRoute = _selectedRouteType == 'safest' ? _safestRoute : _fastestRoute;
     if (_currentOfflineRoute != null) {
       OfflineDatabaseService().saveCachedRoute(
         sourceId: sourceId,
@@ -323,16 +368,29 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void computeOfflineRoute({
+    String sourceId = 'node_main_gate',
+    String targetId = 'node_north_hostels',
+  }) {
+    computeDualRoutes(sourceId: sourceId, targetId: targetId);
+  }
+
   void triggerDynamicReroute({
     String blockedEdgeId = 'edge_admin_library',
     String reason = 'Pathway construction / reported unlit hazard',
   }) {
-    _currentOfflineRoute = _dynamicRerouter.reportPathBlockedAndReroute(
+    _safestRoute = _dynamicRerouter.reportPathBlockedAndReroute(
       edgeId: blockedEdgeId,
       reason: reason,
       currentSourceNodeId: 'node_main_gate',
       targetNodeId: 'node_north_hostels',
     );
+    _fastestRoute = _astarEngine.findFastestRoute(
+      sourceNodeId: 'node_main_gate',
+      targetNodeId: 'node_north_hostels',
+      transitMode: _transitMode,
+    );
+    _currentOfflineRoute = _selectedRouteType == 'safest' ? _safestRoute : _fastestRoute;
     OfflineDatabaseService().recordBlockedObstacle(blockedEdgeId, reason);
     notifyListeners();
   }
@@ -340,7 +398,7 @@ class AppState extends ChangeNotifier {
   void resetOfflineBlocks() {
     _dynamicRerouter.clearAllObstacles();
     OfflineDatabaseService().clearAllObstacles();
-    computeOfflineRoute();
+    computeDualRoutes();
   }
 
   void setUserRole(String role) {

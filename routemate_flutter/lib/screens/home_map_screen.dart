@@ -46,9 +46,19 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
     }
 
     // Convert offline A* path nodes to LatLng polyline points
-    final routePoints = offlineRoute != null && offlineRoute.path.isNotEmpty
-        ? offlineRoute.path.map((n) => LatLng(n.latitude, n.longitude)).toList()
+    final safestRoute = state.safestRoute;
+    final fastestRoute = state.fastestRoute;
+    final isSafestSelected = state.selectedRouteType == 'safest';
+
+    final safestPoints = safestRoute != null && safestRoute.path.isNotEmpty
+        ? safestRoute.path.map((n) => LatLng(n.latitude, n.longitude)).toList()
         : <LatLng>[];
+
+    final fastestPoints = fastestRoute != null && fastestRoute.path.isNotEmpty
+        ? fastestRoute.path.map((n) => LatLng(n.latitude, n.longitude)).toList()
+        : <LatLng>[];
+
+    final activeRoutePoints = isSafestSelected ? safestPoints : fastestPoints;
 
     return Scaffold(
       body: Stack(
@@ -92,16 +102,40 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                 ],
               ),
 
-              // Polyline Layer for Bidirectional A* & Dynamic Re-Routing
-              if (routePoints.isNotEmpty)
+              // Alternate Route Polyline (Thinner preview)
+              if (isSafestSelected && fastestPoints.isNotEmpty)
                 PolylineLayer(
                   polylines: [
                     Polyline(
-                      points: routePoints,
-                      color: (offlineRoute?.isDynamicReroute ?? false)
-                          ? const Color(0xFFEA580C) // Vibrant Orange for Dynamic Detour
-                          : AppTheme.secondary, // Emerald Green for Safe Path
-                      strokeWidth: 5.0,
+                      points: fastestPoints,
+                      color: const Color(0xFFD97706).withOpacity(0.4),
+                      strokeWidth: 3.5,
+                    ),
+                  ],
+                ),
+              if (!isSafestSelected && safestPoints.isNotEmpty)
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: safestPoints,
+                      color: const Color(0xFF059669).withOpacity(0.4),
+                      strokeWidth: 3.5,
+                    ),
+                  ],
+                ),
+
+              // Active Selected Route Polyline (Bold, full-opacity)
+              if (activeRoutePoints.isNotEmpty)
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: activeRoutePoints,
+                      color: isSafestSelected
+                          ? ((safestRoute?.isDynamicReroute ?? false)
+                              ? const Color(0xFFEA580C) // Vibrant Orange for Dynamic Detour
+                              : const Color(0xFF059669)) // Emerald Green for Safe Path
+                          : const Color(0xFFD97706), // Amber for Shortest / Direct Path
+                      strokeWidth: 5.5,
                     ),
                   ],
                 ),
@@ -216,7 +250,95 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                       ),
                     );
                   }),
-                ],
+
+                  // Night Safety POIs & Surveillance Assets Layer (24/7 stores, CCTVs, Police, Alerts)
+                  if (state.showSafetyPois)
+                    ...state.safetyPois.map((poi) {
+                      Color poiColor;
+                      IconData poiIcon;
+                      switch (poi.category) {
+                        case 'open_24x7':
+                          poiColor = const Color(0xFF059669); // Emerald Green
+                          poiIcon = Icons.storefront_rounded;
+                          break;
+                        case 'cctv':
+                          poiColor = const Color(0xFF7C3AED); // Purple
+                          poiIcon = Icons.videocam_rounded;
+                          break;
+                        case 'police':
+                          poiColor = const Color(0xFF2563EB); // Royal Blue
+                          poiIcon = Icons.local_police_rounded;
+                          break;
+                        case 'isolated_alert':
+                        default:
+                          poiColor = const Color(0xFFDC2626); // Crimson Alert
+                          poiIcon = Icons.warning_amber_rounded;
+                          break;
+                      }
+
+                      return Marker(
+                        point: LatLng(poi.latitude, poi.longitude),
+                        width: 36,
+                        height: 36,
+                        child: Tooltip(
+                          message: '${poi.name}\n${poi.subtitle}',
+                          child: GestureDetector(
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: const Duration(seconds: 3),
+                                  backgroundColor: poiColor,
+                                  content: Row(
+                                    children: [
+                                      Icon(poiIcon, color: Colors.white, size: 20),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              poi.name,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Text(
+                                              poi.subtitle,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white70,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: poiColor, width: 2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: poiColor.withOpacity(0.35),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(poiIcon, color: poiColor, size: 18),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
               ),
             ],
           ),
@@ -594,10 +716,10 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
             ),
           ),
 
-          // Satellite Auto-Follow, Breadcrumb Trail & Locate Me Floating Controls
+          // Satellite Auto-Follow, Breadcrumb Trail, Safety POIs & Locate Me Floating Controls
           Positioned(
             right: 16,
-            bottom: 350,
+            bottom: 415,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -610,6 +732,35 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                   child: const Icon(
                     Icons.layers_rounded,
                     color: Color(0xFF0284C7),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Safety POIs & CCTV Surveillance Layer Toggle
+                FloatingActionButton.small(
+                  heroTag: 'safety_poi_toggle',
+                  backgroundColor: state.showSafetyPois ? const Color(0xFF059669) : Colors.white,
+                  tooltip: state.showSafetyPois
+                      ? 'Hide Safety POIs & CCTVs'
+                      : 'Show 24/7 Stores, Clinics & CCTVs',
+                  onPressed: () {
+                    state.toggleShowSafetyPois();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: const Duration(seconds: 1),
+                        backgroundColor: state.showSafetyPois ? const Color(0xFF059669) : const Color(0xFF64748B),
+                        content: Text(
+                          state.showSafetyPois
+                              ? '🛡️ Safety POIs & CCTV Pins: Visible'
+                              : '🛡️ Safety POIs & CCTV Pins: Hidden',
+                        ),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.security_rounded,
+                    color: state.showSafetyPois ? Colors.white : const Color(0xFF059669),
                     size: 20,
                   ),
                 ),
@@ -685,6 +836,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
+
                 // Locate Me / Recenter to Live Location Floating Button
                 FloatingActionButton.small(
                   heroTag: 'recenter_gps',
@@ -723,24 +875,24 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
           // Floating SOS Button (Fixed bottom right)
           const Positioned(
             right: 16,
-            bottom: 300,
+            bottom: 360,
             child: SOSFloatingButton(),
           ),
 
-          // Bottom Request & Re-Route Controller Card
+          // Bottom Dual Route Night Safety & Re-Route Controller Card
           Positioned(
             left: 16,
             right: 16,
-            bottom: 24,
+            bottom: 16,
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 20,
+                    color: Colors.black.withOpacity(0.12),
+                    blurRadius: 24,
                     offset: const Offset(0, 6),
                   ),
                 ],
@@ -749,12 +901,22 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Destination Row
+                  // 1. Destination Header & Walking / Two-Wheeler Transit Mode Switch
                   Row(
                     children: [
-                      const Icon(Icons.navigation_rounded,
-                          color: AppTheme.primaryContainer, size: 22),
-                      const SizedBox(width: 10),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryContainer.withOpacity(0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.navigation_rounded,
+                          color: AppTheme.primaryContainer,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -762,28 +924,125 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                             Text(
                               state.destination,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.onSurface,
                               ),
                             ),
-                            if (offlineRoute != null)
-                              Text(
-                                '${offlineRoute.totalDistanceMeters.toInt()}m walk • ${(offlineRoute.safetyScore * 100).toInt()}% Safety Index',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.secondary,
-                                ),
+                            Text(
+                              isSafestSelected
+                                  ? 'Active: Safest Night Corridor (${safestRoute?.nightScore ?? 89}/100)'
+                                  : 'Active: Shortest Direct Path (${fastestRoute?.nightScore ?? 26}/100)',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: isSafestSelected ? const Color(0xFF059669) : const Color(0xFFD97706),
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Transit Mode Toggle (Walk vs Ride)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF1F5F9),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(2),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _TransitModeChip(
+                              icon: Icons.directions_walk,
+                              label: 'Walk',
+                              isSelected: state.transitMode == 'walking',
+                              onTap: () => state.setTransitMode('walking'),
+                            ),
+                            _TransitModeChip(
+                              icon: Icons.two_wheeler,
+                              label: 'Ride',
+                              isSelected: state.transitMode == 'two_wheeler',
+                              onTap: () => state.setTransitMode('two_wheeler'),
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const Divider(height: 18, color: Color(0xFFF0F2FF)),
+                  const SizedBox(height: 10),
 
-                  // Dynamic Re-Route Simulation Button Row
+                  // 2. Dual Route Cards Comparison (Safest Night Route vs Fastest Route)
+                  Row(
+                    children: [
+                      // Safest Route Card
+                      Expanded(
+                        child: _RouteComparisonCard(
+                          title: 'Safest Route',
+                          tag: 'RECOMMENDED',
+                          tagColor: const Color(0xFF059669),
+                          nightScore: safestRoute?.nightScore ?? 89,
+                          durationMin: safestRoute?.estimatedMinutes ?? 5,
+                          distanceMeters: safestRoute?.totalDistanceMeters.toInt() ?? 370,
+                          highlights: '${safestRoute?.cctvCount ?? 6} CCTVs • ${safestRoute?.openPlacesCount ?? 5} 24/7 Stores',
+                          subhighlight: '0m dark gap • 100% lit avenue',
+                          isSelected: isSafestSelected,
+                          accentColor: const Color(0xFF059669),
+                          onTap: () => state.selectRouteType('safest'),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      // Fastest Route Card
+                      Expanded(
+                        child: _RouteComparisonCard(
+                          title: 'Fastest Route',
+                          tag: 'SHORTEST',
+                          tagColor: const Color(0xFFD97706),
+                          nightScore: fastestRoute?.nightScore ?? 26,
+                          durationMin: fastestRoute?.estimatedMinutes ?? 3,
+                          distanceMeters: fastestRoute?.totalDistanceMeters.toInt() ?? 260,
+                          highlights: '${fastestRoute?.cctvCount ?? 0} CCTVs • 0 Open places',
+                          subhighlight: '${fastestRoute?.maxDarkGapMeters.toInt() ?? 260}m unlit stretch ⚠️',
+                          isSelected: !isSafestSelected,
+                          accentColor: const Color(0xFFD97706),
+                          onTap: () => state.selectRouteType('fastest'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+
+                  // 3. Trade-off Narrative Banner
+                  if (safestRoute != null && fastestRoute != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.compare_arrows_rounded,
+                              size: 15, color: Color(0xFF0284C7)),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              '+${(safestRoute.estimatedMinutes - fastestRoute.estimatedMinutes).clamp(1, 10)} min (+${(safestRoute.totalDistanceMeters - fastestRoute.totalDistanceMeters).toInt()}m) for +${safestRoute.nightScore - fastestRoute.nightScore}% night score • ${safestRoute.openPlacesCount} open stores vs ${fastestRoute.maxDarkGapMeters.toInt()}m dark stretch',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF334155),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+
+                  // 4. Dynamic Re-Route Simulation Button Row
                   Row(
                     children: [
                       Expanded(
@@ -802,7 +1061,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                             (offlineRoute?.isDynamicReroute ?? false)
                                 ? Icons.restart_alt
                                 : Icons.report_problem_outlined,
-                            size: 16,
+                            size: 15,
                             color: (offlineRoute?.isDynamicReroute ?? false)
                                 ? AppTheme.primary
                                 : const Color(0xFFEA580C),
@@ -812,7 +1071,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                                 ? 'Reset Obstacle'
                                 : 'Simulate Blocked Path',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: (offlineRoute?.isDynamicReroute ?? false)
                                   ? AppTheme.primary
@@ -826,17 +1085,17 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                                   : const Color(0xFFFDBA74),
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
 
-                  // Escort Mode Selector Pills
+                  // 5. Escort Mode Selector Pills
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -860,12 +1119,12 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 10),
 
-                  // Search Trigger Button
+                  // 6. Search Trigger Button
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 44,
                     child: ElevatedButton(
                       onPressed: () {
                         state.startSearch();
@@ -876,7 +1135,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                           ),
                         );
                       },
-                      child: const Text('Find Local Guide Escort'),
+                      child: const Text('Find Local Guide Escort', style: TextStyle(fontSize: 14)),
                     ),
                   ),
                 ],
@@ -1406,3 +1665,206 @@ class _ModePill extends StatelessWidget {
     );
   }
 }
+
+class _TransitModeChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _TransitModeChip({
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 4,
+                  ),
+                ]
+              : null,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 14,
+              color: isSelected ? AppTheme.primaryContainer : const Color(0xFF64748B),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                color: isSelected ? AppTheme.primaryContainer : const Color(0xFF64748B),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RouteComparisonCard extends StatelessWidget {
+  final String title;
+  final String tag;
+  final Color tagColor;
+  final int nightScore;
+  final int durationMin;
+  final int distanceMeters;
+  final String highlights;
+  final String subhighlight;
+  final bool isSelected;
+  final Color accentColor;
+  final VoidCallback onTap;
+
+  const _RouteComparisonCard({
+    required this.title,
+    required this.tag,
+    required this.tagColor,
+    required this.nightScore,
+    required this.durationMin,
+    required this.distanceMeters,
+    required this.highlights,
+    required this.subhighlight,
+    required this.isSelected,
+    required this.accentColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isSelected ? accentColor.withOpacity(0.06) : Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isSelected ? accentColor : Colors.grey.shade200,
+            width: isSelected ? 2.0 : 1.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isSelected ? accentColor.withOpacity(0.12) : Colors.black.withOpacity(0.03),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: tagColor.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    tag,
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                      color: tagColor,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                ),
+                if (isSelected)
+                  Icon(Icons.check_circle_rounded, size: 14, color: accentColor),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  '$nightScore',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    color: accentColor,
+                  ),
+                ),
+                const SizedBox(width: 3),
+                Text(
+                  '/100',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.grey.shade500,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '$durationMin min',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF0F172A),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '$distanceMeters meters',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade600,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              highlights,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF1E293B),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              subhighlight,
+              style: TextStyle(
+                fontSize: 9.5,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? accentColor : Colors.grey.shade600,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

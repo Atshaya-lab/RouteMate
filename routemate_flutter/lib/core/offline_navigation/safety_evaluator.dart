@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'routing_graph.dart';
 
 class SafetyConstraintConfig {
@@ -111,5 +112,49 @@ class SafetyEvaluator {
       safetyScore: safetyScore.clamp(0.0, 1.0),
       uncertaintyWarning: uncertaintyWarning,
     );
+  }
+
+  /// Computes the comprehensive Night Activity Score (0 to 100)
+  /// Incorporates lighting, open 24/7 places, CCTV density, main road ratio,
+  /// and applies an explicit dark gap penalty for long isolated stretches.
+  int computeNightScore({
+    required double lightingScore,
+    required int openPlacesCount,
+    required int cctvCount,
+    required double distanceMeters,
+    required double maxDarkGapMeters,
+    required double mainRoadRatio,
+    String transitMode = 'walking',
+  }) {
+    // 1. Base Lighting Score (35 points max)
+    double score = lightingScore * 35.0;
+
+    // 2. Open 24/7 Establishments Density (25 points max)
+    final distKm = math.max(0.1, distanceMeters / 1000.0);
+    final openDensity = (openPlacesCount / distKm);
+    score += (openDensity / 5.0).clamp(0.0, 1.0) * 25.0;
+
+    // 3. CCTV Surveillance Coverage (15 points max)
+    final cctvDensity = (cctvCount / distKm);
+    score += (cctvDensity / 5.0).clamp(0.0, 1.0) * 15.0;
+
+    // 4. Main Road / Boulevard Ratio (15 points max)
+    score += mainRoadRatio.clamp(0.0, 1.0) * 15.0;
+
+    // 5. Baseline activity presence (10 points)
+    if (openPlacesCount > 0 || cctvCount > 0) {
+      score += 10.0;
+    }
+
+    // 6. Dark Gap Penalty (Deduction of up to 40 points)
+    // A long unbroken dark gap severely penalizes walking mode
+    final gapTolerance = transitMode == 'two_wheeler' ? 250.0 : 120.0;
+    if (maxDarkGapMeters > gapTolerance) {
+      final excessGap = maxDarkGapMeters - gapTolerance;
+      final gapDeduction = (excessGap / 120.0).clamp(0.0, 1.0) * (transitMode == 'two_wheeler' ? 25.0 : 40.0);
+      score -= gapDeduction;
+    }
+
+    return score.round().clamp(10, 99);
   }
 }

@@ -95,6 +95,10 @@ class CampusOfflineGraphBuilder {
       lightingScore: 1.0,
       isAccessible: true,
       dataConfidence: 1.0,
+      cctvCount: 3,
+      open24x7PlacesCount: 2,
+      maxDarkGapMeters: 0,
+      roadCategory: 'main_boulevard',
     ));
 
     // Lit Quad Walkway: Admin Block <-> Library Quad
@@ -102,10 +106,14 @@ class CampusOfflineGraphBuilder {
       id: 'edge_admin_library',
       fromNodeId: 'node_admin_block',
       toNodeId: 'node_library_quad',
-      distanceMeters: 105,
+      distanceMeters: 130,
       lightingScore: 0.95,
       isAccessible: true,
       dataConfidence: 1.0,
+      cctvCount: 2,
+      open24x7PlacesCount: 2,
+      maxDarkGapMeters: 10,
+      roadCategory: 'main_boulevard',
     ));
 
     // North Campus Avenue: Library Quad <-> North Hostels
@@ -113,10 +121,14 @@ class CampusOfflineGraphBuilder {
       id: 'edge_library_hostels',
       fromNodeId: 'node_library_quad',
       toNodeId: 'node_north_hostels',
-      distanceMeters: 210,
+      distanceMeters: 240,
       lightingScore: 0.9,
       isAccessible: true,
       dataConfidence: 0.95,
+      cctvCount: 4,
+      open24x7PlacesCount: 3,
+      maxDarkGapMeters: 15,
+      roadCategory: 'main_boulevard',
     ));
 
     // Safe Shelter Corridor 1: Admin Block <-> Health Center
@@ -128,6 +140,10 @@ class CampusOfflineGraphBuilder {
       lightingScore: 0.85,
       isAccessible: true,
       dataConfidence: 0.95,
+      cctvCount: 2,
+      open24x7PlacesCount: 3,
+      maxDarkGapMeters: 15,
+      roadCategory: 'lit_walkway',
     ));
 
     // Safe Shelter Corridor 2: Health Center <-> Police Booth
@@ -139,6 +155,10 @@ class CampusOfflineGraphBuilder {
       lightingScore: 0.9,
       isAccessible: true,
       dataConfidence: 1.0,
+      cctvCount: 3,
+      open24x7PlacesCount: 2,
+      maxDarkGapMeters: 10,
+      roadCategory: 'lit_walkway',
     ));
 
     // Safe Shelter Corridor 3: Police Booth <-> North Hostels
@@ -150,29 +170,42 @@ class CampusOfflineGraphBuilder {
       lightingScore: 0.85,
       isAccessible: true,
       dataConfidence: 0.95,
+      cctvCount: 2,
+      open24x7PlacesCount: 1,
+      maxDarkGapMeters: 15,
+      roadCategory: 'lit_walkway',
     ));
 
-    // HAZARDOUS EDGE 1: Unlit Shortcut with Low Data Confidence
+    // FAST BUT UNLIT SHORTCUT (Hazardous Stretch with Zero Shops/CCTV):
+    // Admin Block -> Dark Alley (110m) -> North Hostels (150m) = 260m vs 370m via Lit Boulevard
     graph.addEdge(GraphEdge(
       id: 'edge_admin_dark_alley',
       fromNodeId: 'node_admin_block',
       toNodeId: 'node_dark_alley',
-      distanceMeters: 140,
+      distanceMeters: 110,
       hazardType: HazardType.unlitArea,
-      lightingScore: 0.15,
-      dataConfidence: 0.45, // Sparse telemetry triggers explicit warning
+      lightingScore: 0.1,
+      dataConfidence: 0.4,
       isAccessible: true,
+      cctvCount: 0,
+      open24x7PlacesCount: 0,
+      maxDarkGapMeters: 110,
+      roadCategory: 'secluded_alley',
     ));
 
     graph.addEdge(GraphEdge(
       id: 'edge_dark_alley_hostels',
       fromNodeId: 'node_dark_alley',
       toNodeId: 'node_north_hostels',
-      distanceMeters: 220,
+      distanceMeters: 150,
       hazardType: HazardType.unlitArea,
-      lightingScore: 0.2,
-      dataConfidence: 0.5,
+      lightingScore: 0.15,
+      dataConfidence: 0.45,
       isAccessible: true,
+      cctvCount: 0,
+      open24x7PlacesCount: 0,
+      maxDarkGapMeters: 150,
+      roadCategory: 'secluded_alley',
     ));
 
     // HAZARDOUS EDGE 2: Construction Zone
@@ -185,8 +218,82 @@ class CampusOfflineGraphBuilder {
       lightingScore: 0.3,
       isAccessible: false,
       dataConfidence: 0.8,
+      cctvCount: 0,
+      open24x7PlacesCount: 0,
+      maxDarkGapMeters: 160,
+      roadCategory: 'secluded_alley',
     ));
 
     return graph;
+  }
+
+  /// Returns static POIs for 24/7 open stores, surveillance cameras, police, and warning beacons
+  static List<SafetyPoi> getCampusSafetyPois() {
+    return const [
+      SafetyPoi(
+        id: 'poi_clinic_247',
+        name: 'Campus Medical Clinic',
+        category: 'open_24x7',
+        latitude: 9.5750,
+        longitude: 77.6835,
+        subtitle: '24/7 First Aid & Emergency Doctor',
+      ),
+      SafetyPoi(
+        id: 'poi_pharmacy_247',
+        name: 'Apollo 24/7 Pharmacy',
+        category: 'open_24x7',
+        latitude: 9.5756,
+        longitude: 77.6823,
+        subtitle: 'Open All Night • Medicine & Shelter',
+      ),
+      SafetyPoi(
+        id: 'poi_police_outpost',
+        name: 'East Police Outpost',
+        category: 'police',
+        latitude: 9.5768,
+        longitude: 77.6838,
+        subtitle: 'Active 24/7 Patrol & SOS Station',
+      ),
+      SafetyPoi(
+        id: 'poi_gate_security',
+        name: 'Main Gate Checkpost',
+        category: 'police',
+        latitude: 9.5747,
+        longitude: 77.6815,
+        subtitle: 'Campus Security & Barrier Desk',
+      ),
+      SafetyPoi(
+        id: 'poi_cctv_quad',
+        name: 'CCTV #104 Quad PTZ',
+        category: 'cctv',
+        latitude: 9.5758,
+        longitude: 77.6822,
+        subtitle: 'Live Public Surveillance Node',
+      ),
+      SafetyPoi(
+        id: 'poi_cctv_north',
+        name: 'CCTV #108 North Avenue',
+        category: 'cctv',
+        latitude: 9.5772,
+        longitude: 77.6828,
+        subtitle: 'High-Res Street Surveillance',
+      ),
+      SafetyPoi(
+        id: 'poi_cctv_library',
+        name: 'CCTV #112 Library Hub',
+        category: 'cctv',
+        latitude: 9.5763,
+        longitude: 77.6826,
+        subtitle: 'Safe Passage Monitored Area',
+      ),
+      SafetyPoi(
+        id: 'poi_alert_dark_alley',
+        name: 'Dark Gap Warning',
+        category: 'isolated_alert',
+        latitude: 9.5765,
+        longitude: 77.6810,
+        subtitle: '260m Unlit Stretch • No Open Shops',
+      ),
+    ];
   }
 }
