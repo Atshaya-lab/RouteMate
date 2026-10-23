@@ -1,11 +1,52 @@
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const flutterWebDir = path.join(__dirname, '..', 'routemate_flutter', 'build', 'web');
+
+// Disable static caching so code updates appear immediately
+app.use(express.static(flutterWebDir, {
+  etag: false,
+  maxAge: 0,
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+}));
+
+// Real-time IP Geolocation API fallback for desktop / laptop browsers without GPS chips
+app.get('/api/live-location', async (req, res) => {
+  try {
+    const response = await fetch('http://ip-api.com/json');
+    const data = await response.json();
+    if (data && data.status === 'success') {
+      return res.json({
+        success: true,
+        latitude: data.lat,
+        longitude: data.lon,
+        city: data.city,
+        region: data.regionName,
+        country: data.country,
+        isp: data.isp,
+      });
+    }
+  } catch (err) {
+    console.error('IP Geolocation error:', err.message);
+  }
+  res.json({
+    success: false,
+    latitude: 9.5747,
+    longitude: 77.6815,
+    city: 'Campus Reference',
+  });
+});
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -147,6 +188,10 @@ function getDistanceKm(lat1, lon1, lat2, lon2) {
 const { scoreAndRankGuides, calculateHaversineDistanceKm } = require('./matching');
 
 // REST ENDPOINTS
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(flutterWebDir, 'index.html'));
+});
 
 // 1. Nearby Guides Query (PostGIS & Pure Matching Engine)
 app.get('/api/guides/nearby', (req, res) => {
@@ -397,3 +442,11 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
   console.log(`RouteMate server listening on http://localhost:${PORT}`);
 });
+
+try {
+  const server8082 = http.createServer(app);
+  server8082.listen(8082, '0.0.0.0', () => {
+    console.log(`RouteMate Web App also listening on http://localhost:8082`);
+  });
+  server8082.on('error', () => {});
+} catch (_) {}

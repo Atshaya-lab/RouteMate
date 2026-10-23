@@ -1,6 +1,6 @@
 import { GuideProfile, LocationCoordinate, TripRequest, ActiveSession, SOSAlert } from '../types';
 
-export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.1.1.56:3000';
+export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.198.214.238:3000';
 
 export async function fetchNearbyGuides(
   location: LocationCoordinate,

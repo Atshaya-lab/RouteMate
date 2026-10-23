@@ -16,7 +16,7 @@ const getApiBaseUrl = () => {
       return `http://${ip}:3000`;
     }
   }
-  return 'http://10.1.1.56:3000';
+    return process.env.EXPO_PUBLIC_API_URL || 'http://10.198.214.238:3000';
 };
 
 const API_BASE_URL = getApiBaseUrl();
